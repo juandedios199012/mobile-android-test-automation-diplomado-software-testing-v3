@@ -48,7 +48,10 @@ Thumbs.db
 *.mov
 *.wmv
 
+# Maven
 /build/
+
+
 /.gradle/
 /.idea/
 /gradle/
