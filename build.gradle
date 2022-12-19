@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+}
+
+group 'com.mobile.test'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    // appium
+    implementation 'io.appium:java-client:8.2.0'
+    implementation 'org.seleniumhq.selenium:selenium-java:4.5.0'
+
+    // cucumber
+    testImplementation 'io.cucumber:cucumber-junit:7.8.1'
+    implementation 'io.cucumber:cucumber-java:7.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
+//gradle cucumber -Psuite=@sanity
+task cucumber() {
+    dependsOn assemble, testClasses
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = [
+                    '--plugin', 'pretty',
+                    '--plugin', 'html:target/cucumber-report.html',
+                    '--glue', 'runner',
+                    'src/test/resources' , '--tags']+[suite]
+        }
+    }
+}
