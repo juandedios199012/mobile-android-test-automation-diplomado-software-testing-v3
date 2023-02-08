@@ -10,5 +10,5 @@ public class LoginScreen {
     public TextBox usuarioTextBox = new TextBox(By.id("com.uniflex.flexbusinessandroid:id/loginEteUsuario"));
     public TextBox passwordTextBox = new TextBox(By.id("com.uniflex.flexbusinessandroid:id/LoginEtePassword"));
     public Button ingresarButton = new Button(By.id("com.uniflex.flexbusinessandroid:id/loginButIngresar"));
-    public Label clienteLabel=new Label(By.xpath("//android.widget.TextView[@text='Clientes']"));
+    public Label clienteLabel = new Label(By.xpath("//android.widget.TextView[@text='Clientes']"));
 }
