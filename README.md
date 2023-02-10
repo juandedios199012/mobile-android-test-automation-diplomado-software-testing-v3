@@ -56,7 +56,7 @@ por la [Universidad Cátolica Boliviana "San Pablo"](https://lpz.ucb.edu.bo/) de
 
 ### Agile Planning
 
-- Azure Board or Trellium
+- Azure Board
 
 ### Test Project Architecture Mobile
 
@@ -78,4 +78,6 @@ por la [Universidad Cátolica Boliviana "San Pablo"](https://lpz.ucb.edu.bo/) de
 - Run Local and Remote
 - BaseTest Class
 - Parallel execution
+
+### Run 
   

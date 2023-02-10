@@ -16,6 +16,4 @@ public class OrderScreen {
     public Label totalContadoLabel = new Label(By.id("com.uniflex.flexbusinessandroid:id/tviTotalContado"));//text 20.0
     public Label totalCreditoLabel = new Label(By.id("com.uniflex.flexbusinessandroid:id/tviTotalCredito"));//text 0.0
     public Label totalLabel = new Label(By.id("com.uniflex.flexbusinessandroid:id/tviTotalComprobante"));//text 20.0
-
-
 }

@@ -18,14 +18,17 @@ public class Android implements IDevice {
         capabilities.setCapability("appActivity", "com.uniflex.flexbusinessandroid.activities.LoginActivity");
         capabilities.setCapability("platformName", "Android");
         capabilities.setCapability("autoGrantPermissions", true);
+        capabilities.setCapability("unicodeKeyboard", true);
+        capabilities.setCapability("resetKeyboard", true);
         AppiumDriver driver = null;
         try {
             driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+            driver.hideKeyboard();
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
         // implicit
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
         return driver;
     }
 }

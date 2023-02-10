@@ -19,5 +19,9 @@ public class PurchaseSummaryScreen {
     public Label totalContadoLabel = new Label(By.id("com.uniflex.flexbusinessandroid:id/tviTotalContado"));//20.0
     public Label totalCreditoLabel = new Label(By.id("com.uniflex.flexbusinessandroid:id/tviTotalCredito"));//0.0
     public TextBox observacionTextBox = new TextBox(By.id("com.uniflex.flexbusinessandroid:id/tviObservacion"));//0.0
+    public Label alertObservacionLabel = new Label(By.id("android:id/alertTitle"));//0.0
+    public TextBox observacionEditText = new TextBox(By.id("android.widget.EditText"));//0.0
+
+    public Button okButton = new Button(By.id("android:id/button1"));
     public Label totalLabel = new Label(By.id("com.uniflex.flexbusinessandroid:id/tviTotalComprobante"));//20.0
 }

@@ -19,6 +19,14 @@ dependencies {
     // cucumber
     testImplementation 'io.cucumber:cucumber-junit:7.8.1'
     implementation 'io.cucumber:cucumber-java:7.8.1'
+
+    // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.19.0'
+
+    // https://mvnrepository.com/artifact/com.aventstack/extentreports
+    implementation group: 'com.aventstack', name: 'extentreports', version: '5.0.9'
+
+
 }
 
 test {
@@ -31,7 +39,7 @@ configurations {
     }
 }
 
-//gradle cucumber -Psuite=@sanity
+//gradle clean cucumber -Psuite=@order
 task cucumber() {
     dependsOn assemble, testClasses
     doLast {
@@ -40,7 +48,7 @@ task cucumber() {
             classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
             args = [
                     '--plugin', 'pretty',
-                    '--plugin', 'html:target/cucumber-report.html',
+                   '--plugin', 'html:reporte/cucumber-report.html',
                     '--glue', 'runner',
                     'src/test/resources', '--tags'] + [suite]
         }
