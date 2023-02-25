@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 public class AndroidCloud implements IDevice {
     public AppiumDriver create() {
         DesiredCapabilities caps = new DesiredCapabilities();
-        var faker = new Faker();
+        Faker faker = new Faker();
         String version=faker.app().version();
 
         // Set your access credentials

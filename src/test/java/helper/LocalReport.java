@@ -11,7 +11,7 @@ import java.util.List;
 public class LocalReport {
    // public static void main(String[] argss) {
    public static void generateReport () {
-        var faker = new Faker();
+        Faker faker = new Faker();
         String version=faker.app().version();
 
         String ruta = "build/reports/cucumber/";
