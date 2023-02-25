@@ -20,12 +20,24 @@ dependencies {
     testImplementation 'io.cucumber:cucumber-junit:7.8.1'
     implementation 'io.cucumber:cucumber-java:7.8.1'
 
+    // https://mvnrepository.com/artifact/net.masterthought/cucumber-reporting
+    //https://github.com/damianszczepanik/cucumber-reporting
+    implementation group: 'net.masterthought', name: 'cucumber-reporting', version: '5.7.4'
+
     // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.19.0'
 
     // https://mvnrepository.com/artifact/com.aventstack/extentreports
     implementation group: 'com.aventstack', name: 'extentreports', version: '5.0.9'
 
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.14.2'
+
+    // https://mvnrepository.com/artifact/com.github.javafaker/javafaker
+    implementation group: 'com.github.javafaker', name: 'javafaker', version: '1.0.2'
+
+    // https://mvnrepository.com/artifact/de.monochromata.cucumber/reporting-plugin
+    implementation group: 'de.monochromata.cucumber', name: 'reporting-plugin', version: '5.0.0'
 
 }
 
@@ -48,9 +60,26 @@ task cucumber() {
             classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
             args = [
                     '--plugin', 'pretty',
-                   '--plugin', 'html:reporte/cucumber-report.html',
-                    '--glue', 'runner',
+                    //'--plugin', 'html:target/cucumber-report.html',
+                    '--plugin', 'json:build/reports/cucumber/report.json',
+                    '--glue', 'runner','src/test/resources',
                     'src/test/resources', '--tags'] + [suite]
+        }
+    }
+}
+
+task cloud() {
+    dependsOn assemble, testClasses
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = [
+                    '--plugin', 'pretty',
+                    '--plugin', 'json:build/reports/cucumber/report.json4',
+                    //'--plugin','de.monochromata.cucumber.report.PrettyReports:build/reports/cucumber/',
+                    '--glue', 'runner','src/test/resources',
+                    '--tags','@order']
         }
     }
 }

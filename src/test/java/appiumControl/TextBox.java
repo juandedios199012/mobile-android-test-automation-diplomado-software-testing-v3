@@ -13,5 +13,4 @@ public class TextBox extends AppiumControl {
         this.control.clear();
         this.control.sendKeys(value);
     }
-
 }

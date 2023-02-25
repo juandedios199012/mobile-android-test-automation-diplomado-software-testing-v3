@@ -1,5 +1,6 @@
 package factoryDevices;
 
+import com.github.javafaker.Faker;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -11,14 +12,16 @@ import java.util.concurrent.TimeUnit;
 public class AndroidCloud implements IDevice {
     public AppiumDriver create() {
         DesiredCapabilities caps = new DesiredCapabilities();
+        var faker = new Faker();
+        String version=faker.app().version();
 
         // Set your access credentials
-        caps.setCapability("browserstack.user", "juanbs_j1aP5o");
-        caps.setCapability("browserstack.key", "H6XypiWqx3eemvkYRgvq");
+        caps.setCapability("browserstack.user", "unsolotestersegu_WNetxY");
+        caps.setCapability("browserstack.key", "p6MK71rptEdHq5cqqiFd");
 
 
         // Set URL of the application under test
-        caps.setCapability("app", "bs://c073ad07faa4331feb1365f308082ec83383975d");
+        caps.setCapability("app", "bs://a031988eca5b38f1289b94623872734154aac967");
 
         // Specify device and os_version for testing
         caps.setCapability("device", "Google Pixel 3");
@@ -28,9 +31,9 @@ public class AndroidCloud implements IDevice {
         caps.setCapability("browserstack.timezone", "Lima");
 
         // Set other BrowserStack capabilities
-        caps.setCapability("project", "Diplomado Software Testing v3");
-        caps.setCapability("build", "1.0");
-        caps.setCapability("name", "DiplomadoApp-v3");
+        caps.setCapability("project", "TiendApp");
+        caps.setCapability("build", version);
+        caps.setCapability("name", "Sales Flows");
         caps.setCapability("autoGrantPermissions", true);
 
         AndroidDriver driver;

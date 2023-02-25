@@ -4,7 +4,7 @@ import appiumControl.Button;
 import appiumControl.Label;
 import org.openqa.selenium.By;
 
-public class OrdersList {
+public class OrdersListScreen {
 
     public Button modificarButton = new Button(By.id("com.uniflex.flexbusinessandroid:id/btnModificar")); //lista de pedidos
     public Button anularButton = new Button(By.id("com.uniflex.flexbusinessandroid:id/btnEliminar"));//lista de pedidos
@@ -13,7 +13,7 @@ public class OrdersList {
     public Label totalPedidoLabel = new Label(By.id("com.uniflex.flexbusinessandroid:id/tviPedidoTotal"));
     public Label creditoLabel = new Label(By.id("com.uniflex.flexbusinessandroid:id/tviLineaCreditoPedido"));// Contado
     public Label operacionLabel = new Label(By.id("com.uniflex.flexbusinessandroid:id/tviPedidoOperacion"));// Contado
-    public Label mensajeOKLabel = new Label(By.id("com.uniflex.flexbusinessandroid:id/tviPedidoMensaje"));// OK
+    public Label pedidoMensajeLabel = new Label(By.id("com.uniflex.flexbusinessandroid:id/tviPedidoMensaje"));// OK
     public Button agregarButton = new Button(By.id("com.uniflex.flexbusinessandroid:id/actAgregar")); //agregar otro pedido
 
 }

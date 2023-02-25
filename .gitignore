@@ -52,6 +52,7 @@ Thumbs.db
 /build/
 
 
+# Gradle
 /.gradle/
 /.idea/
-/gradle/
+

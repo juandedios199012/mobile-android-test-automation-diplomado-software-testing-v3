@@ -3,7 +3,7 @@ package runner;
 import activity.Customer.CustomerInformationScreen;
 import activity.Customer.CustomerListScreen;
 import activity.Order.OrderScreen;
-import activity.Order.OrdersList;
+import activity.Order.OrdersListScreen;
 import activity.Order.Performance;
 import activity.Order.PurchaseSummaryScreen;
 import activity.Product.ProductScreen;
@@ -18,7 +18,6 @@ import io.cucumber.java.en.When;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
-import singletonSession.Session;
 
 public class OrderTest {
 
@@ -33,7 +32,7 @@ public class OrderTest {
     ProductScreen productScreen = new ProductScreen();
     PurchaseSummaryScreen purchaseSummaryScreen = new PurchaseSummaryScreen();
     Performance performance = new Performance();
-    OrdersList ordersList = new OrdersList();
+    OrdersListScreen ordersList = new OrdersListScreen();
     //WaitUntilElement waitUntilElement;
 
     @Given("^el vendedor abre el aplicativo2$")
@@ -103,8 +102,7 @@ public class OrderTest {
         logger.info("Click en Grabar Pedido");
         purchaseSummaryScreen.grabarButton.click();
         Thread.sleep(6000);
-        ordersList.mensajeOKLabel.isVisibility();
-        Assert.assertEquals("OK",ordersList.mensajeOKLabel.getText());
+        ordersList.pedidoMensajeLabel.isVisibility();
+        Assert.assertEquals("OKjjj", ordersList.pedidoMensajeLabel.getText());
     }
-
 }

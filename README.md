@@ -79,5 +79,22 @@ por la [Universidad Cátolica Boliviana "San Pablo"](https://lpz.ucb.edu.bo/) de
 - BaseTest Class
 - Parallel execution
 
-### Run 
+### Locators XPATH
+
+- `//android.widget.TextView)[6]`
+
+### Run Cucumber with Gradle from Command Line (Using Task into build.gradle)
+
+- gradle clean cucumber -Psuite=@order
+-  ./gradlew cucumber
+
+### Referencias
+
+https://www.youtube.com/watch?v=HDR-fm32Lnk
+
+### Desafios 
+- In AndroidCloud be set a capability to get Lima - Perú time zone: `caps.setCapability("browserstack.timezone", "Lima");`
+- In AndroidCloud and Android classes be set a capability to acept the Permissions `caps.setCapability("autoGrantPermissions", true);`
+- 
+
   
