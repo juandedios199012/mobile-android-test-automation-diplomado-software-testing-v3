@@ -9,12 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LocalReport {
-   // public static void main(String[] argss) {
-   public static void generateReport () {
+   public static void main(String[] argss) {
         Faker faker = new Faker();
         String version=faker.app().version();
 
-        String ruta = "build/reports/cucumber/";
+        String ruta = "reports/cucumber/";
         File report = new File(ruta + "TiendApp");
 
         List<String> jsonFiles = new ArrayList<>();

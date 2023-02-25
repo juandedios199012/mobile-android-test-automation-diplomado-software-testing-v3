@@ -35,10 +35,6 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.github.javafaker/javafaker
     implementation group: 'com.github.javafaker', name: 'javafaker', version: '1.0.2'
-
-    // https://mvnrepository.com/artifact/de.monochromata.cucumber/reporting-plugin
-    implementation group: 'de.monochromata.cucumber', name: 'reporting-plugin', version: '5.0.0'
-
 }
 
 test {
@@ -76,10 +72,16 @@ task cloud() {
             classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
             args = [
                     '--plugin', 'pretty',
-                    '--plugin', 'json:build/reports/cucumber/report.json4',
-                    //'--plugin','de.monochromata.cucumber.report.PrettyReports:build/reports/cucumber/',
+                    '--plugin', 'json:reports/cucumber/report.json',
                     '--glue', 'runner','src/test/resources',
                     '--tags','@order']
         }
     }
+}
+
+task report(type: JavaExec) {
+    group = "Execution"
+    description = "Run the main class with JavaExecTask"
+    classpath = sourceSets.main.runtimeClasspath
+    main("src/test/java/helper/LocalReport.java")
 }

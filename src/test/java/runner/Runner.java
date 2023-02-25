@@ -30,10 +30,4 @@ public class Runner {
         //https://github.com/damianszczepanik/cucumber-reporting
         //LocalReport.generateReport();
     }
-
-    @AfterClass
-    public static void generateReport() {
-        LocalReport.generateReport();
-    }
-
 }

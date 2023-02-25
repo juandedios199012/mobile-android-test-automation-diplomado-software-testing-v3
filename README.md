@@ -86,7 +86,9 @@ por la [Universidad Cátolica Boliviana "San Pablo"](https://lpz.ucb.edu.bo/) de
 ### Run Cucumber with Gradle from Command Line (Using Task into build.gradle)
 
 - gradle clean cucumber -Psuite=@order
--  ./gradlew cucumber
+- ./gradlew clean cucumber
+- ./gradlew clean cloud
+- ./gradlew report
 
 ### Referencias
 
@@ -97,4 +99,5 @@ https://www.youtube.com/watch?v=HDR-fm32Lnk
 - In AndroidCloud and Android classes be set a capability to acept the Permissions `caps.setCapability("autoGrantPermissions", true);`
 - 
 
-  
+### Continuous Integration - Azure Pipeline
+- Delete .jar in the field Contents Copy files task
