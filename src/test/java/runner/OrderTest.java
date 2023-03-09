@@ -103,6 +103,6 @@ public class OrderTest {
         purchaseSummaryScreen.grabarButton.click();
         Thread.sleep(6000);
         ordersList.pedidoMensajeLabel.isVisibility();
-        Assert.assertEquals("OKlll", ordersList.pedidoMensajeLabel.getText());
+        Assert.assertEquals("OK", ordersList.pedidoMensajeLabel.getText());
     }
 }
