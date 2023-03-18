@@ -72,7 +72,7 @@ task cloud() {
             classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
             args = [
                     '--plugin', 'pretty',
-                    '--plugin', 'json:build/reports/cucumber/report.json',
+                    '--plugin', 'json:reports/cucumber/report.json',
                     '--glue', 'runner','src/test/resources',
                     '--tags','@order']
         }

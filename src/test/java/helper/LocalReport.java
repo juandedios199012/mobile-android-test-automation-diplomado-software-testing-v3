@@ -13,7 +13,7 @@ public class LocalReport {
         Faker faker = new Faker();
         String version=faker.app().version();
 
-        String ruta = "build/reports/cucumber/";
+        String ruta = "reports/cucumber/";
         File report = new File(ruta + "TiendApp");
 
         List<String> jsonFiles = new ArrayList<>();
