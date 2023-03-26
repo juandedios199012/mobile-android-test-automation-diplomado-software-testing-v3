@@ -15,7 +15,7 @@ Feature: Order
   @modify
   Scenario: Como vendedor quiero modificar la venta
 
-    Given El vendedor tiene un pedido
+    Given El vendedor tiene un pedido registrado
     When El vendedor elimina un producto del pedido
     And modifica cantidad de productos
     Then graba la modificacion
