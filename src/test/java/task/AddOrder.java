@@ -25,8 +25,15 @@ public class AddOrder {
     Swipe swipe = new Swipe();
     PurchaseSummaryScreen purchaseSummaryScreen = new PurchaseSummaryScreen();
     OrdersListScreen ordersListScreen = new OrdersListScreen();
+    GotoOrder gotoOrder = new GotoOrder();
+    ShowMenuMobile showMenuMobile=new ShowMenuMobile();
+    GoToPurchaseSummary goToPurchaseSummary = new GoToPurchaseSummary();
+    SaveOrder saveOrder = new SaveOrder();
 
-    public void withTheData() throws InterruptedException {
+    public void withTheData(String cantidadVenta, String BonificacionManual) throws InterruptedException {
+        showMenuMobile.selectOrderMenu();
+        gotoOrder.goToOrderToCreate();
+
         logger.info("Click en el Boton +");
         orderScreen.agregarProductosButton.click();
         logger.info("Click en el Codigo de Producto");
@@ -36,20 +43,15 @@ public class AddOrder {
         productScreen.bonificacionManualCheckBox.check();
         logger.info("Ingresar Cantidad de Bonificacion manual");
         //productScreen.cantidad1TextBox.setText(order.getCantidadBonificacion());
-        productScreen.cantidad1TextBox.setText("1");
+        productScreen.cantidad1TextBox.setText(cantidadVenta);
         logger.info("Ingresar Cantidad de Productos de venta");
         //productScreen.cantidad2TextBox.setText(order.getCantidadVenta());
-        productScreen.cantidad2TextBox.setText("4");
+        productScreen.cantidad2TextBox.setText(BonificacionManual);
         logger.info("Click en el boton Aceptar");
         productScreen.aceptarButton.click();
-        logger.info("Pantalla de Pedido seleccionada");
-        performance.menuPedido.isControlSelected();
-        logger.info("ir a Avance");
-        swipe.swipeScreen(Direction.LEFT);
-        logger.info("ir a Confirmacion");
-        swipe.swipeScreen(Direction.LEFT);
-        logger.info("Click en Grabar Pedido");
-        purchaseSummaryScreen.grabarButton.click();
+        goToPurchaseSummary.goToPurchaseSummary();
+        saveOrder.onClickSaveOrder();
+
         Thread.sleep(20000);
         ordersListScreen.pedidoMensajeLabel.isVisibility();
     }

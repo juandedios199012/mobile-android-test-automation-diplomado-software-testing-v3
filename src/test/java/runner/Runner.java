@@ -25,9 +25,5 @@ public class Runner {
             scenario.attach(screen, "image/png", "TiendApp Failed Step");
         }
         Session.getInstance().closeApp();
-
-        //comentar si la ejecucion se realiza por Jenkins
-        //https://github.com/damianszczepanik/cucumber-reporting
-        //LocalReport.generateReport();
     }
 }

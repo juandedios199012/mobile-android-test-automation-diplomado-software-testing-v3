@@ -28,7 +28,7 @@ public class CancelOrderStepDefinition {
         searchCustomer.selectCustomer();
         showMenuMobile.selectOrderMenu();
         gotoOrder.goToOrderToCreate();
-        addOrder.withTheData();
+        addOrder.withTheData("","");
     }
 
     @When("anula el pedido")

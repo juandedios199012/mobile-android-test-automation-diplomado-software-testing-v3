@@ -7,7 +7,7 @@ import io.cucumber.java.en.When;
 import org.junit.Assert;
 import task.*;
 
-public class OrderModifyStepDefinition {
+public class SalesForceOrderModifyStepDefinition {
 
     AddOrder addOrder = new AddOrder();
     Login login = new Login();
@@ -27,7 +27,7 @@ public class OrderModifyStepDefinition {
         searchCustomer.selectCustomer();
         showMenuMobile.selectOrderMenu();
         gotoOrder.goToOrderToCreate();
-        addOrder.withTheData();
+        addOrder.withTheData("","");
     }
 
     @When("ingresa al pedido")

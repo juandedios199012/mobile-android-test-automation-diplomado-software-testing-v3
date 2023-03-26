@@ -101,3 +101,7 @@ https://www.youtube.com/watch?v=HDR-fm32Lnk
 
 ### Continuous Integration - Azure Pipeline
 - Delete .jar in the field Contents Copy files task
+
+### BrowserStack Account
+    "user": "unsolotester@gmail.com",
+    "password": "41B2C3D4$",
