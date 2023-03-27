@@ -1,18 +1,34 @@
 package helper;
 
+import io.cucumber.core.internal.com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.ObjectMapper;
 import model.Order;
+import task.Login;
 
+import java.io.FileNotFoundException;
+import java.io.File;
+import java.util.Scanner;
 
 public class DataProvider {
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    public Order getOrderData() throws JsonProcessingException {
 
-    public void orderDataProvider() {
+        ObjectMapper objectMapper = new ObjectMapper();
+
         try {
-            Order order = objectMapper.readValue("resources/json/order.json", Order.class);
-        } catch (Exception e) {
-        }
+            File file = new File("src/test/resources/json/order.json");
+            Scanner myReader = new Scanner(file);
+            String data = "";
+            while (myReader.hasNextLine()) {
+                data += myReader.nextLine();
+            }
+            myReader.close();
 
+            return objectMapper.readValue(data, Order.class);
+
+        } catch (JsonProcessingException | FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return new Order();
     }
 }

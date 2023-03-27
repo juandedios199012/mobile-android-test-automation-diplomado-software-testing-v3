@@ -1,11 +1,9 @@
 package runner;
 
-import helper.LocalReport;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import io.cucumber.junit.Cucumber;
-import org.junit.AfterClass;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.OutputType;
 import singletonSession.Session;
@@ -15,7 +13,6 @@ public class Runner {
 
     @Before
     public void before() {
-
     }
 
     @After

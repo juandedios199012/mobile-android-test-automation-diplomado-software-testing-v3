@@ -74,7 +74,7 @@ task cloud() {
                     '--plugin', 'pretty',
                     '--plugin', 'json:reports/cucumber/report.json',
                     '--glue', 'runner','src/test/resources',
-                    '--tags','@order']
+                    '--tags','@SalesForceOrder']
         }
     }
 }

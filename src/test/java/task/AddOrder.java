@@ -55,12 +55,4 @@ public class AddOrder {
         Thread.sleep(20000);
         ordersListScreen.pedidoMensajeLabel.isVisibility();
     }
-
-    public void orderDataProvider() {
-        try {
-            order = objectMapper.readValue("resources/json/order.json", Order.class);
-        } catch (Exception e) {
-        }
-
-    }
 }

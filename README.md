@@ -97,7 +97,7 @@ https://www.youtube.com/watch?v=HDR-fm32Lnk
 ### Desafios 
 - In AndroidCloud be set a capability to get Lima - Perú time zone: `caps.setCapability("browserstack.timezone", "Lima");`
 - In AndroidCloud and Android classes be set a capability to acept the Permissions `caps.setCapability("autoGrantPermissions", true);`
-- 
+
 
 ### Continuous Integration - Azure Pipeline
 - Delete .jar in the field Contents Copy files task
@@ -105,3 +105,9 @@ https://www.youtube.com/watch?v=HDR-fm32Lnk
 ### BrowserStack Account
     "user": "unsolotester@gmail.com",
     "password": "41B2C3D4$",
+
+@SalesForceOrder
+Scenario: El vendedor inicia sesion
+Given El vendedor abre el aplicativo
+When El vendedor ingresa sus credenciales "uniflexqa" "vendedor" "123"
+Then El vendedor inicia sesion

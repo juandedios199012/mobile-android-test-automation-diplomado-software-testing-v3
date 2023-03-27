@@ -75,7 +75,7 @@ public class AppiumControl {
     public boolean isVisibility() {
         this.findControl();
         try {
-            WebDriverWait wait = new WebDriverWait(Session.getInstance().getDriver(), 120);
+            WebDriverWait wait = new WebDriverWait(Session.getInstance().getDriver(), 360);
             wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
             return true;
         } catch (Exception e) {
