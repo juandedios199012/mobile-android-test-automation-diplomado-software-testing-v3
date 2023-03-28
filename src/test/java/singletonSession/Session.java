@@ -9,7 +9,7 @@ public class Session {
     private AppiumDriver driver;
 
     private Session() {
-        driver = FactoryDevice.make("android").create();
+        driver = FactoryDevice.make("androidCloud").create();
     }
 
     public static Session getInstance() {

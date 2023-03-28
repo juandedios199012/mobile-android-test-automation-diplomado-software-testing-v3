@@ -22,12 +22,7 @@ public class Swipe {
     Dimension dims = Session.getInstance().getDriver().manage().window().getSize();
 
     public void swipeScreen(Direction dir) {
-        System.out.println("swipeScreen(): dir: '" + dir + "'"); // always log your actions
-
-        // Animation default time:
-        //  - Android: 300 ms
-        //  - iOS: 200 ms
-        // final value depends on your app and could be greater
+        System.out.println("swipeScreen(): dir: '" + dir + "'");
 
         // init start point = center of screen
         pointOptionStart = PointOption.point(dims.width / 2, dims.height / 2);

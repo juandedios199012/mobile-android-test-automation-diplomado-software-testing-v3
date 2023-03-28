@@ -32,11 +32,6 @@ public class AppiumControl {
         return bonificacion;
     }
 
-    public void clickElement(int index) {
-        this.findControls();
-        this.controls.get(index).click();
-    }
-
     public void click() {
         this.findControl();
         this.control.click();
@@ -68,7 +63,6 @@ public class AppiumControl {
     public boolean isPresent() {
         this.findControl();
         try {
-            //WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(3));
             WebDriverWait wait = new WebDriverWait(Session.getInstance().getDriver(), 60);
             wait.until(ExpectedConditions.presenceOfElementLocated(locator));
             return true;
@@ -77,16 +71,6 @@ public class AppiumControl {
             return false;
         }
     }
-
-    public boolean isPresentElement() {
-        try {
-            this.findControl();
-            return true;
-        } catch (NoSuchElementException e) {
-            return false;
-        }
-    }
-
 
     public boolean isInVisible() {
         this.findControl();

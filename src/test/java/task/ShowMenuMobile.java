@@ -19,12 +19,4 @@ public class ShowMenuMobile {
         logger.info("click en el menu pedido");
         menuMobileScreen.pedidoMenu.click();
     }
-    public void selectCollections() {
-
-    }
-
-    //
-    public void selectCancelAnInvoice() {
-
-    }
 }

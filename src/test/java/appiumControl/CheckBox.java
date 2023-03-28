@@ -12,9 +12,4 @@ public class CheckBox extends AppiumControl {
         this.findControl();
         this.control.click();
     }
-
-    public void uncheck() {
-        this.findControl();
-        this.control.click();
-    }
 }

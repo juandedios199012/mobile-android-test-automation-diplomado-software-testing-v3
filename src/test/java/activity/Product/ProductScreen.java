@@ -12,14 +12,8 @@ public class ProductScreen {
     public Label stock1Label = new Label(By.id("com.uniflex.flexbusinessandroid:id/tviStock1"));
     public CheckBox bonificacionManualCheckBox = new CheckBox(By.id("com.uniflex.flexbusinessandroid:id/chkBonificacionManual1"));
     public TextBox cantidad1TextBox = new TextBox(By.id("com.uniflex.flexbusinessandroid:id/eteCantidad1"));
-    public Label stock2Label = new Label(By.id("com.uniflex.flexbusinessandroid:id/tviStock2"));
     public TextBox cantidad2TextBox = new TextBox(By.id("com.uniflex.flexbusinessandroid:id/eteCantidad2"));
     public Button aceptarButton = new Button(By.id("com.uniflex.flexbusinessandroid:id/btnAceptar"));
     public Label combo = new Label(By.xpath("//*[contains(@text,'COMBO')][1]"));
     public Label codigoLabel2 = new Label(By.xpath("//*[contains(@text,'290302')][1]"));
-
-
-    //text
-    // 010163
-    //ACE ACCION INSTANTANEA BOL 15*800GR
 }

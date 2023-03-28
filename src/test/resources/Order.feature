@@ -1,5 +1,4 @@
-@CrudOrder
-Feature: Order
+Feature: Sales Force Order
 
   @SalesForceOrder
   Scenario Outline: Como vendedor quiero crear, modificar y anular la venta de productos
