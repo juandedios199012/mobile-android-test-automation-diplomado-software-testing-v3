@@ -9,8 +9,7 @@ public class Session {
     private AppiumDriver driver;
 
     private Session() {
-        driver = FactoryDevice.make("androidCloud").create();
-        //driver.hideKeyboard();
+        driver = FactoryDevice.make("android").create();
     }
 
     public static Session getInstance() {

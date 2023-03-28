@@ -13,13 +13,18 @@ public class ModifyOrder {
     OrderScreen orderScreen = new OrderScreen();
     ProductScreen productScreen = new ProductScreen();
 
-    public void withTheData() {
+    public void withTheData() throws InterruptedException {
 
         String bolsas = "1";
 
         logger.info("Eliminar Producto Venta");
-        orderScreen.codigoProducto.click();
-        orderScreen.eliminarButton.click();
+        if (!orderScreen.codigoProducto.findControls2()){
+            orderScreen.codigoProducto.click();
+            orderScreen.eliminarButton.click();
+        }else{
+            orderScreen.codigoProductoSalesForce.click();
+            orderScreen.eliminarButton.click();
+        }
 
         logger.info("Click en +");
         orderScreen.agregarProductosButton.click();
@@ -54,5 +59,6 @@ public class ModifyOrder {
 
         logger.info("Click en el Boton Aceptar");
         productScreen.aceptarButton.click();
+        Thread.sleep(6000);
     }
 }

@@ -19,11 +19,6 @@ public class ShowMenuMobile {
         logger.info("click en el menu pedido");
         menuMobileScreen.pedidoMenu.click();
     }
-
-    public void selectNoOrder() {
-
-    }
-
     public void selectCollections() {
 
     }
@@ -32,6 +27,4 @@ public class ShowMenuMobile {
     public void selectCancelAnInvoice() {
 
     }
-
-
 }

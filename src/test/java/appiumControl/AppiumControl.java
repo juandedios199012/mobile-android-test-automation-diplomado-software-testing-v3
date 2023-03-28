@@ -6,9 +6,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import singletonSession.Session;
 
+import java.util.List;
+import java.util.NoSuchElementException;
+
 public class AppiumControl {
     protected By locator;
     protected WebElement control;
+    protected List<WebElement> controls;
 
     public AppiumControl(By locator) {
         this.locator = locator;
@@ -17,6 +21,20 @@ public class AppiumControl {
 
     public void findControl() {
         this.control = Session.getInstance().getDriver().findElement(this.locator);
+    }
+
+    public void findControls() {
+        this.controls = Session.getInstance().getDriver().findElements(this.locator);
+    }
+
+    public Boolean findControls2() {
+        boolean bonificacion = Session.getInstance().getDriver().findElements(this.locator).isEmpty();
+        return bonificacion;
+    }
+
+    public void clickElement(int index) {
+        this.findControls();
+        this.controls.get(index).click();
     }
 
     public void click() {
@@ -59,6 +77,16 @@ public class AppiumControl {
             return false;
         }
     }
+
+    public boolean isPresentElement() {
+        try {
+            this.findControl();
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
 
     public boolean isInVisible() {
         this.findControl();

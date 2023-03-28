@@ -2,21 +2,20 @@ package helper;
 
 import io.cucumber.core.internal.com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.ObjectMapper;
-import model.Order;
-import task.Login;
+import model.Login;
 
-import java.io.FileNotFoundException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class DataProvider {
 
-    public Order getOrderData() throws JsonProcessingException {
+    public Login getOrderData() throws JsonProcessingException {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            File file = new File("src/test/resources/json/order.json");
+            File file = new File("src/test/resources/json/login.json");
             Scanner myReader = new Scanner(file);
             String data = "";
             while (myReader.hasNextLine()) {
@@ -24,11 +23,11 @@ public class DataProvider {
             }
             myReader.close();
 
-            return objectMapper.readValue(data, Order.class);
+            return objectMapper.readValue(data, Login.class);
 
         } catch (JsonProcessingException | FileNotFoundException e) {
             e.printStackTrace();
         }
-        return new Order();
+        return new Login();
     }
 }

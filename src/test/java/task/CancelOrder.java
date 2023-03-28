@@ -10,7 +10,7 @@ public class CancelOrder {
     private static final Logger logger = LogManager.getLogger(JsonTestDataHelper.class);
     OrdersListScreen ordersListScreen = new OrdersListScreen();
 
-    public void cancelOrderSales(){
+    public void cancelOrderSales() throws InterruptedException {
         logger.info("Click en el Pedido");
         ordersListScreen.pedidoMensajeLabel.isVisibility();
         ordersListScreen.pedidoMensajeLabel.click();
@@ -21,5 +21,6 @@ public class CancelOrder {
 
         logger.info("Click en el Boton Confirmacion de Anulacion");
         ordersListScreen.confirmacionAnulacionButton.click();
+        Thread.sleep(6000);
     }
 }

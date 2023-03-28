@@ -11,11 +11,22 @@ public class SearchCustomer {
 
     CustomerListScreen customerListScreen = new CustomerListScreen();
 
-    public void selectCustomer() {
+    public void selectCustomer(String cliente, String tipo) {
         logger.info("Click en Cliente");
         customerListScreen.clienteButton.click();
 
-        logger.info("Click en el Cliente");
-        customerListScreen.clienteCheckBox.check();
+        switch (tipo) {
+            case "Portafolio":
+                logger.info("Click en el Cliente: " + cliente);
+                customerListScreen.clienteCheckBox0.check();
+                break;
+            case "Fuerza de Venta":
+                logger.info("Click en el Cliente: " + cliente);
+                customerListScreen.clienteCheckBox1.check();
+                break;
+            default:
+                System.out.println("No se encuentra un cliente");
+                break;
+        }
     }
 }

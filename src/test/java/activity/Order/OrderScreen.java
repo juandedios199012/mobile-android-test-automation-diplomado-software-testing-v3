@@ -17,5 +17,5 @@ public class OrderScreen {
     public Label totalCreditoLabel = new Label(By.id("com.uniflex.flexbusinessandroid:id/tviTotalCredito"));//text 0.0
     public Label totalLabel = new Label(By.id("com.uniflex.flexbusinessandroid:id/tviTotalComprobante"));//text 20.0
     public Label codigoProducto = new Label(By.xpath("//*[contains(@text,'010163')]"));//text 20.0
-
+    public Label codigoProductoSalesForce = new Label(By.xpath("(//*[contains(@text,'290302')])[1]"));//text 20.0
 }

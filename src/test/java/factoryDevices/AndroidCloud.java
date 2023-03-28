@@ -13,7 +13,7 @@ public class AndroidCloud implements IDevice {
     public AppiumDriver create() {
         DesiredCapabilities caps = new DesiredCapabilities();
         Faker faker = new Faker();
-        String version=faker.app().version();
+        String version = faker.app().version();
 
         // Set your access credentials
         caps.setCapability("browserstack.user", "unsolotestersegu_WNetxY");

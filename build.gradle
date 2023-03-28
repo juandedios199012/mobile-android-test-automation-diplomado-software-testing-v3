@@ -58,7 +58,7 @@ task cucumber() {
                     '--plugin', 'pretty',
                     //'--plugin', 'html:target/cucumber-report.html',
                     '--plugin', 'json:build/reports/cucumber/report.json',
-                    '--glue', 'runner','src/test/resources',
+                    '--glue', 'runner', 'src/test/resources',
                     'src/test/resources', '--tags'] + [suite]
         }
     }
@@ -73,8 +73,8 @@ task cloud() {
             args = [
                     '--plugin', 'pretty',
                     '--plugin', 'json:reports/cucumber/report.json',
-                    '--glue', 'runner','src/test/resources',
-                    '--tags','@SalesForceOrder']
+                    '--glue', 'runner', 'src/test/resources',
+                    '--tags', '@SalesForceOrder']
         }
     }
 }

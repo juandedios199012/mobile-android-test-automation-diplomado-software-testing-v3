@@ -15,5 +15,5 @@ public class OrdersListScreen {
     public Label operacionLabel = new Label(By.id("com.uniflex.flexbusinessandroid:id/tviPedidoOperacion"));// Contado
     public Label pedidoMensajeLabel = new Label(By.id("com.uniflex.flexbusinessandroid:id/tviPedidoMensaje"));// OK
     public Button agregarButton = new Button(By.id("com.uniflex.flexbusinessandroid:id/actAgregar")); //agregar otro pedido
-
+    public Button retrocederButton = new Button(By.xpath("//android.widget.ImageButton[@content-desc='Desplazarse hacia arriba']"));
 }

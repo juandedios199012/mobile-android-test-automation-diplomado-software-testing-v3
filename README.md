@@ -82,6 +82,7 @@ por la [Universidad Cátolica Boliviana "San Pablo"](https://lpz.ucb.edu.bo/) de
 ### Locators XPATH
 
 - `//android.widget.TextView)[6]`
+- `(//*[contains(@text,'290302')])[1]`
 
 ### Run Cucumber with Gradle from Command Line (Using Task into build.gradle)
 
@@ -94,20 +95,27 @@ por la [Universidad Cátolica Boliviana "San Pablo"](https://lpz.ucb.edu.bo/) de
 
 https://www.youtube.com/watch?v=HDR-fm32Lnk
 
-### Desafios 
-- In AndroidCloud be set a capability to get Lima - Perú time zone: `caps.setCapability("browserstack.timezone", "Lima");`
-- In AndroidCloud and Android classes be set a capability to acept the Permissions `caps.setCapability("autoGrantPermissions", true);`
+### Desafios
 
+- In AndroidCloud be set a capability to get Lima - Perú time
+  zone: `caps.setCapability("browserstack.timezone", "Lima");`
+- In AndroidCloud and Android classes be set a capability to acept the
+  Permissions `caps.setCapability("autoGrantPermissions", true);`
 
 ### Continuous Integration - Azure Pipeline
+
 - Delete .jar in the field Contents Copy files task
 
 ### BrowserStack Account
+
     "user": "unsolotester@gmail.com",
     "password": "41B2C3D4$",
 
-@SalesForceOrder
-Scenario: El vendedor inicia sesion
-Given El vendedor abre el aplicativo
-When El vendedor ingresa sus credenciales "uniflexqa" "vendedor" "123"
+@SalesForceOrder Scenario: El vendedor inicia sesion Given El vendedor abre el aplicativo When El vendedor ingresa sus
+credenciales "uniflexqa" "vendedor" "123"
 Then El vendedor inicia sesion
+
+portafolio 3c3bb3ea-40bf-4b53-aa4f-1b3683b6f674 ESCALANTE MARIÑO, ADELMA (105090)
+
+fuerza de venta PUCUTAY PALMA, FELICITA EDELINA (105018)
+f78900e8-3ec9-431b-b5ad-324f879bec54

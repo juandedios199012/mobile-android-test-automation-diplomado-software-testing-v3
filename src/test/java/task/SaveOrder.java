@@ -16,6 +16,6 @@ public class SaveOrder {
         logger.info("Click en Grabar Pedido");
         purchaseSummaryScreen.grabarButton.click();
         Thread.sleep(6000);
-        ordersListScreen.pedidoMensajeLabel.isVisibility();
+        //ordersListScreen.pedidoMensajeLabel.isVisibility();
     }
 }

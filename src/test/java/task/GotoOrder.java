@@ -25,7 +25,7 @@ public class GotoOrder {
         ordersListScreen.modificarButton.isVisibility();
         ordersListScreen.modificarButton.click();
 
-        purchaseSummaryScreen.grabarButton.isVisibility();
+        purchaseSummaryScreen.grabarButton.isControlDisplayed();
 
         logger.info("Ir a Avance ");
         swipe.swipeScreen(Direction.RIGHT);

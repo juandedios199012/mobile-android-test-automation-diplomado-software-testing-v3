@@ -7,4 +7,5 @@ public class MenuMobileScreen {
 
     public Button menuButton = new Button(By.xpath("//android.widget.ImageButton[@content-desc='FlexMobile']"));//se repite
     public Button pedidoMenu = new Button(By.xpath("//android.widget.TextView[@text='Pedido']")); //text: Pedido
+    public Button clienteMenu = new Button(By.xpath("//android.widget.TextView[@text='Clientes']"));
 }
