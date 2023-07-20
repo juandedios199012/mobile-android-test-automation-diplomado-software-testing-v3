@@ -7,7 +7,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import singletonSession.Session;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class AppiumControl {
     protected By locator;
@@ -17,7 +16,6 @@ public class AppiumControl {
     public AppiumControl(By locator) {
         this.locator = locator;
     }
-
 
     public void findControl() {
         this.control = Session.getInstance().getDriver().findElement(this.locator);

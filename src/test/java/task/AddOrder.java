@@ -19,7 +19,7 @@ public class AddOrder {
     GoToPurchaseSummary goToPurchaseSummary = new GoToPurchaseSummary();
     SaveOrder saveOrder = new SaveOrder();
 
-    public void withTheData(String BonificacionManual,String cantidadVenta) throws InterruptedException {
+    public void withTheData(String BonificacionManual, String cantidadVenta) throws InterruptedException {
         showMenuMobile.selectOrderMenu();
         gotoOrder.goToOrderToCreate();
 
@@ -30,13 +30,12 @@ public class AddOrder {
         productScreen.codigoLabel.click();
 
         logger.info("Click en Bonificacion Manual");
-        if (!productScreen.bonificacionManualCheckBox.findControls2()){
+        if (!productScreen.bonificacionManualCheckBox.findControls2()) {
             productScreen.bonificacionManualCheckBox.check();
         }
 
         logger.info("Ingresar Cantidad de Bonificacion manual");
         productScreen.stock1Label.isControlDisplayed();
-        //productScreen.cantidad1TextBox.isVisibility();
         productScreen.cantidad1TextBox.setText(BonificacionManual);
         logger.info("Ingresar Cantidad de Productos de venta");
         productScreen.cantidad2TextBox.isVisibility();

@@ -38,8 +38,8 @@ public class OrderCreateStepDefinition {
     }
 
     @And("ingresa los productos y sus cantidades {string} {string}")
-    public void ingresaLosProductosYSusCantidades(String cantidadBonificacion, String cantidadVenta ) throws InterruptedException {
-        addOrder.withTheData(cantidadBonificacion,cantidadVenta);
+    public void ingresaLosProductosYSusCantidades(String cantidadBonificacion, String cantidadVenta) throws InterruptedException {
+        addOrder.withTheData(cantidadBonificacion, cantidadVenta);
     }
 
     @Then("graba el pedido con el mensaje {string}")
@@ -79,6 +79,7 @@ public class OrderCreateStepDefinition {
         Assert.assertTrue(ordersListScreen.pedidoMensajeLabel.isControlDisplayed());
         Assert.assertEquals(mensaje, ordersListScreen.pedidoMensajeLabel.getText());
     }
+
     @And("y el estado de Operacion de la Anulacion {string}")
     public void yElEstadoDeOperacionDeLaAnulacion(String operacion) {
         Assert.assertEquals(operacion, ordersListScreen.operacionLabel.getText());

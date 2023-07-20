@@ -1,6 +1,5 @@
 package task;
 
-import activity.Order.OrdersListScreen;
 import activity.Order.PurchaseSummaryScreen;
 import helper.JsonTestDataHelper;
 import org.apache.logging.log4j.LogManager;

@@ -18,10 +18,10 @@ public class ModifyOrder {
         String bolsas = "1";
 
         logger.info("Eliminar Producto Venta");
-        if (!orderScreen.codigoProducto.findControls2()){
+        if (!orderScreen.codigoProducto.findControls2()) {
             orderScreen.codigoProducto.click();
             orderScreen.eliminarButton.click();
-        }else{
+        } else {
             orderScreen.codigoProductoSalesForce.click();
             orderScreen.eliminarButton.click();
         }
