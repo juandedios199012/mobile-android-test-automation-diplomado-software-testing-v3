@@ -47,7 +47,6 @@ configurations {
     }
 }
 
-//gradle clean cucumber -Psuite=@order
 task cucumber() {
     dependsOn assemble, testClasses
     doLast {
@@ -77,6 +76,10 @@ task cloud() {
                     '--tags', '@SalesForceOrder']
         }
     }
+}
+
+task cleanProject(type: Delete) {
+    delete 'build', 'reports'
 }
 
 task report(type: JavaExec) {
