@@ -56,3 +56,6 @@ Thumbs.db
 /.gradle/
 /.idea/
 
+# Other
+reports/
+

@@ -16,12 +16,12 @@ public class AndroidCloud implements IDevice {
         String version = faker.app().version();
 
         // Set your access credentials
-        caps.setCapability("browserstack.user", "unsolotestersegu_WNetxY");
-        caps.setCapability("browserstack.key", "p6MK71rptEdHq5cqqiFd");
+        caps.setCapability("browserstack.user", "userqatb_MkU0Em");
+        caps.setCapability("browserstack.key", "RJmsh7z66UxsGwyRnm1Z");
 
 
         // Set URL of the application under test
-        caps.setCapability("app", "bs://56eae11ac548d926c6259f3dd5ee10819f0dbe15");
+        caps.setCapability("app", "bs://4defeba76c38582d64e45c3c41254ff15bfbd5e4");
 
         // Specify device and os_version for testing
         caps.setCapability("device", "Google Pixel 3");

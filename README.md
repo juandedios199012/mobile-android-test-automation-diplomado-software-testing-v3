@@ -31,18 +31,11 @@ por la [Universidad Cátolica Boliviana "San Pablo"](https://lpz.ucb.edu.bo/) de
 - Log4j2
 - Gradle
 
-### Tools Mobile
+### Tools Mobile Test
 
 - Appium Server
 - Appium Inspector
 - Cucumber
-
-### Tools Web
-
-- Selenium WebDriver
-- Gson for Test Data
-- Extentreports
-- TestNG for Run Test
 
 ### Devices Cloud Services
 
@@ -51,12 +44,14 @@ por la [Universidad Cátolica Boliviana "San Pablo"](https://lpz.ucb.edu.bo/) de
 ### Continuous Integration
 
 - Azure Pipeline
-- GitHub Action (por revisar)
-- Jenkins Cloud or Local (por revisar)
 
 ### Agile Planning
 
 - Azure Board
+
+### Platform for version control
+
+- GitHub
 
 ### Test Project Architecture Mobile
 
@@ -66,18 +61,6 @@ por la [Universidad Cátolica Boliviana "San Pablo"](https://lpz.ucb.edu.bo/) de
 - Run Local and Remote
 - Specification Scenario with Cucumber
 - Test Data into .feature files
-
-### Test Project Architecture Web
-
-- ScreenPlay pattern
-- Factory pattern for Web drivers
-- Singleton pattern for Json Test Data
-- Test Data Using Model Classes
-- Support Chrome and Firefox
-- Use Selenium Grid
-- Run Local and Remote
-- BaseTest Class
-- Parallel execution
 
 ### Locators XPATH
 
@@ -105,7 +88,3 @@ https://www.youtube.com/watch?v=HDR-fm32Lnk
 ### Continuous Integration - Azure Pipeline
 
 - Delete .jar in the field Contents Copy files task
-
-### BrowserStack Account
-
-    "user": "unsolotester@gmail.com",
