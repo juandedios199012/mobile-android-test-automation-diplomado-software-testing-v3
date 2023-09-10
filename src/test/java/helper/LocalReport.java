@@ -28,6 +28,7 @@ public class LocalReport {
         configuration.addClassifications("Universidad", "Universidad Católica Boliviana San Pablo - La Paz");
         configuration.addClassifications("Diplomado", "Testing de Software vesión 3");
         configuration.addClassifications("Paises de Estudiantes", "Bolivia y Perú");
+        configuration.setTrendsStatsFile(new File(ruta + "trends.json"));
 
         ReportBuilder reportBuilder = new ReportBuilder(jsonFiles, configuration);
         reportBuilder.generateReports();
