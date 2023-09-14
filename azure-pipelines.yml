@@ -1,0 +1,19 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master  # Puedes ajustar la rama desencadenante según tu configuración
+
+pool:
+  vmImage: 'windows-latest'  # Puedes ajustar la imagen de la máquina según tus necesidades
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+    addToPath: true
+
+- script: |
+    az storage blob upload-batch --destination $web --source reports/cucumber/TiendApp/cucumber-html-reports --account-name hubtestinglab --type block --connection-string "BlobEndpoint=https://hubtestinglab.blob.core.windows.net/;QueueEndpoint=https://hubtestinglab.queue.core.windows.net/;FileEndpoint=https://hubtestinglab.file.core.windows.net/;TableEndpoint=https://hubtestinglab.table.core.windows.net/;SharedAccessSignature=sv=2022-11-02&ss=bfqt&srt=sc&sp=rwdlacupiytfx&se=2023-09-14T10:52:24Z&st=2023-09-14T02:52:24Z&spr=https&sig=LmKvGLJhdPqi0oxsYhAGoMdRoU%2BIwfnpe4RPXVPVOYY%3D"
