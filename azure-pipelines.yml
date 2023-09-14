@@ -15,12 +15,8 @@ steps:
    
   displayName: 'Run Test'
 
-- task: Gradle@3
+- script: 'gradlew report'
   displayName: 'Generate Report'
-  inputs:
-    tasks: report
-    publishJUnitResults: false
-    jdkVersionOption: '1.11'
 
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
