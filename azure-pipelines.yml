@@ -10,6 +10,29 @@ pool:
   vmImage: 'windows-latest'  # Puedes ajustar la imagen de la máquina según tus necesidades
 
 steps:
+- script: |
+   gradlew clean cloud
+   
+  displayName: 'Run Test'
+
+- script: 'gradlew report'
+  displayName: 'Generate Report'
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: '**/*'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+  condition: succeededOrFailed()
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: TiendAppTest'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
+    ArtifactName: TiendAppTest
+  condition: succeededOrFailed()
+  
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '3.x'
