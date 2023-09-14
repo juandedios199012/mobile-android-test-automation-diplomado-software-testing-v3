@@ -42,4 +42,4 @@ steps:
     addToPath: true
 
 - script: |
-    az storage blob upload-batch --destination $web --source reports/cucumber/TiendApp/cucumber-html-reports --account-name hubtestinglab --type block --connection-string "BlobEndpoint=https://hubtestinglab.blob.core.windows.net/;QueueEndpoint=https://hubtestinglab.queue.core.windows.net/;FileEndpoint=https://hubtestinglab.file.core.windows.net/;TableEndpoint=https://hubtestinglab.table.core.windows.net/;SharedAccessSignature=sv=2022-11-02&ss=bfqt&srt=sc&sp=rwdlacupiytfx&se=2023-09-14T10:52:24Z&st=2023-09-14T02:52:24Z&spr=https&sig=LmKvGLJhdPqi0oxsYhAGoMdRoU%2BIwfnpe4RPXVPVOYY%3D"
+    az storage blob upload-batch --destination $web --source reports/cucumber/TiendApp/cucumber-html-reports --account-name hubtestinglab --type block --connection-string "DefaultEndpointsProtocol=https;AccountName=hubtestinglab;AccountKey=Me5PyyzkfepXLoDzG4gzeNYaiji+oF5D7K+/Vs0r19pZ5g3P+MlDeQc/nqJ0SttVGRQ0GlJPxBK/+AStmaLB/g==;EndpointSuffix=core.windows.net"
