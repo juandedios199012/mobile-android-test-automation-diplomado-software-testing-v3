@@ -20,7 +20,7 @@ steps:
   inputs:
     tasks: report
     publishJUnitResults: false
-    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.11'
 
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
