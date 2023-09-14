@@ -7,7 +7,7 @@ trigger:
 - master  # Puedes ajustar la rama desencadenante según tu configuración
 
 pool:
-  vmImage: 'windows-latest'  # Puedes ajustar la imagen de la máquina según tus necesidades
+  name: PortafolioAG  # Puedes ajustar la imagen de la máquina según tus necesidades
 
 steps:
 - script: |
