@@ -18,10 +18,8 @@ steps:
 - script: 'gradlew report'
   displayName: 'Generate Report'
 
-- powershell: |
-    # Add Azure CLI to PATH
-    $env:Path += ";C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin"
-    displayName: 'Set Azure CLI Path and Verify'
+- powershell: '$env:Path += ";C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin"'
+  displayName: 'PowerShell Script'
 
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
