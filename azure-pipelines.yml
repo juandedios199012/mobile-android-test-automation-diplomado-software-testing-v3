@@ -18,6 +18,11 @@ steps:
 - script: 'gradlew report'
   displayName: 'Generate Report'
 
+- powershell: |
+    # Add Azure CLI to PATH
+    $env:Path += ";C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin"
+    displayName: 'Set Azure CLI Path and Verify'
+
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
   inputs:
@@ -32,7 +37,7 @@ steps:
     PathtoPublish: '$(build.artifactstagingdirectory)'
     ArtifactName: TiendAppTest
   condition: succeededOrFailed()
-  
+
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '3.x'
