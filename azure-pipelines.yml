@@ -30,16 +30,19 @@ steps:
   condition: succeededOrFailed()
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: TiendAppTest'
+  displayName: 'Publish Artifact: FlexBusiness Mobile'
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
-    ArtifactName: TiendAppTest
+    ArtifactName: FlexBusinessMobileTest
   condition: succeededOrFailed()
 
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '3.x'
     addToPath: true
+
+- script: |
+    az storage blob delete-batch --source $web --account-name hubtestinglab --type block --connection-string "DefaultEndpointsProtocol=https;AccountName=hubtestinglab;AccountKey=Me5PyyzkfepXLoDzG4gzeNYaiji+oF5D7K+/Vs0r19pZ5g3P+MlDeQc/nqJ0SttVGRQ0GlJPxBK/+AStmaLB/g==;EndpointSuffix=core.windows.net"
 
 - script: |
     az storage blob upload-batch --destination $web --source reports/cucumber/TiendApp/cucumber-html-reports --account-name hubtestinglab --type block --connection-string "DefaultEndpointsProtocol=https;AccountName=hubtestinglab;AccountKey=Me5PyyzkfepXLoDzG4gzeNYaiji+oF5D7K+/Vs0r19pZ5g3P+MlDeQc/nqJ0SttVGRQ0GlJPxBK/+AStmaLB/g==;EndpointSuffix=core.windows.net"
