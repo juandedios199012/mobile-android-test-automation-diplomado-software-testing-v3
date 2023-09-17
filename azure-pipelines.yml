@@ -1,0 +1,43 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master  # Puedes ajustar la rama desencadenante según tu configuración
+
+pool:
+  name: PortafolioAG  # Puedes ajustar la imagen de la máquina según tus necesidades
+
+steps:
+- script: |
+   gradlew clean cloud
+   
+  displayName: 'Run Test'
+
+- script: 'gradlew report'
+  displayName: 'Generate Report'
+
+- powershell: '$env:Path += ";C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin"'
+  displayName: 'PowerShell Script'
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: '**/*'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+  condition: succeededOrFailed()
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: FlexBusiness Mobile'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
+    ArtifactName: FlexBusinessMobileTest
+  condition: succeededOrFailed()
+
+- script: |
+    az storage blob delete-batch --source $web --account-name hubtestinglab --connection-string "DefaultEndpointsProtocol=https;AccountName=hubtestinglab;AccountKey=Me5PyyzkfepXLoDzG4gzeNYaiji+oF5D7K+/Vs0r19pZ5g3P+MlDeQc/nqJ0SttVGRQ0GlJPxBK/+AStmaLB/g==;EndpointSuffix=core.windows.net"
+
+- script: |
+    az storage blob upload-batch --destination $web --source reports/cucumber/TiendApp/cucumber-html-reports --account-name hubtestinglab --type block --connection-string "DefaultEndpointsProtocol=https;AccountName=hubtestinglab;AccountKey=Me5PyyzkfepXLoDzG4gzeNYaiji+oF5D7K+/Vs0r19pZ5g3P+MlDeQc/nqJ0SttVGRQ0GlJPxBK/+AStmaLB/g==;EndpointSuffix=core.windows.net"
