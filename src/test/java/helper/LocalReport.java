@@ -19,14 +19,11 @@ public class LocalReport {
         List<String> jsonFiles = new ArrayList<>();
         jsonFiles.add(ruta + "report.json");
 
-        Configuration configuration = new Configuration(report, "Flex Business \n" +
-                "Mobile Test Automation Project");
+        Configuration configuration = new Configuration(report, "Flex Business Mobile");
         configuration.setBuildNumber(version);
-        configuration.addClassifications("Owner", "Test Running S.A");
-        configuration.addClassifications("Environment ", "Android");
-        configuration.addClassifications("Universidad", "Universidad Católica Boliviana San Pablo - La Paz");
-        configuration.addClassifications("Diplomado", "Testing de Software vesión 3");
-        configuration.addClassifications("Paises de Estudiantes", "Bolivia y Perú");
+        configuration.addClassifications("S.O", "Android");
+        configuration.addClassifications("Congreso", "Testing Bolivia 2023");
+        configuration.addClassifications("Anfitrion", "Universidad Privada de Santa Cruz de la Sierra");
         configuration.setTrendsStatsFile(new File( "reports/trends.json"));
 
         ReportBuilder reportBuilder = new ReportBuilder(jsonFiles, configuration);
