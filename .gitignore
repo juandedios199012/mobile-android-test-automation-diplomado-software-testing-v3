@@ -57,5 +57,5 @@ Thumbs.db
 /.idea/
 
 # Other
-reports/
+reports/cucumber/
 

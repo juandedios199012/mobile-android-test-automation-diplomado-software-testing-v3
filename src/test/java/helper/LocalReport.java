@@ -14,21 +14,20 @@ public class LocalReport {
         String version = faker.app().version();
 
         String ruta = "reports/cucumber/";
-        File report = new File(ruta + "TiendApp");
+        File report = new File(ruta + "FlexBusinessMobile");
 
         List<String> jsonFiles = new ArrayList<>();
         jsonFiles.add(ruta + "report.json");
 
-        Configuration configuration = new Configuration(report, "TiendApp Test Automation Project");
+        Configuration configuration = new Configuration(report, "Flex Business \n" +
+                "Mobile Test Automation Project");
         configuration.setBuildNumber(version);
         configuration.addClassifications("Owner", "Test Running S.A");
         configuration.addClassifications("Environment ", "Android");
-        configuration.addClassifications("Tipo", "Local");
-        configuration.addClassifications("Branch", "master");
         configuration.addClassifications("Universidad", "Universidad Católica Boliviana San Pablo - La Paz");
         configuration.addClassifications("Diplomado", "Testing de Software vesión 3");
         configuration.addClassifications("Paises de Estudiantes", "Bolivia y Perú");
-        configuration.setTrendsStatsFile(new File(ruta + "trends.json"));
+        configuration.setTrendsStatsFile(new File( "reports/trends.json"));
 
         ReportBuilder reportBuilder = new ReportBuilder(jsonFiles, configuration);
         reportBuilder.generateReports();
