@@ -19,14 +19,6 @@ steps:
 - powershell: '$env:Path += ";C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin"'
   displayName: 'Path Azure CLI'
 
-- task: CopyFiles@2
-  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-  inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)'
-    Contents: '**/*'
-    TargetFolder: '$(build.artifactstagingdirectory)'
-  condition: succeededOrFailed()
-
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: FlexBusiness Mobile'
   inputs:
