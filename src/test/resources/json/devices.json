@@ -1,0 +1,23 @@
+{
+  "capabilities": {
+    "project": "Flex Business Mobile",
+    "name": "Sales Flows",
+    "browserstack.debug": true,
+    "app": "bs://0c303b0b8d85d9b11bcdb72cc29f0edd27d8e487"
+  },
+  "environments": [
+    {
+      "device": "Google Pixel 3",
+      "os_version": "9.0",
+      "browserstack.timezone": "Lima",
+      "autoGrantPermissions": true
+    },
+    {
+      "device": "Samsung Galaxy S22 Ultra",
+      "os_version": "12.0",
+      "browserstack.timezone": "Lima",
+      "autoGrantPermissions": true
+    }
+  ]
+}
+
