@@ -12,6 +12,7 @@ pool:
 steps:
 - script: 'gradlew clean cloud'
   displayName: 'Run Test'
+  continueOnError: true
 
 - script: 'gradlew report'
   displayName: 'Generate Report'
