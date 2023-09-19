@@ -21,15 +21,11 @@ public class GotoOrder {
     public void goToOrderToModify() {
         ordersListScreen.pedidoMensajeLabel.isVisibility();
         ordersListScreen.pedidoMensajeLabel.click();
-
         ordersListScreen.modificarButton.isVisibility();
         ordersListScreen.modificarButton.click();
-
         purchaseSummaryScreen.grabarButton.isControlDisplayed();
-
         logger.info("Ir a Avance ");
         swipe.swipeScreen(Direction.RIGHT);
-
         logger.info("Ir a Pedido ");
         swipe.swipeScreen(Direction.RIGHT);
     }
