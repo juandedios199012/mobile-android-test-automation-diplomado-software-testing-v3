@@ -1,6 +1,5 @@
 package runner;
 
-import io.cucumber.core.internal.com.fasterxml.jackson.databind.util.JSONPObject;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
@@ -26,7 +25,7 @@ public class Runner {
             scenario.attach(screen, "image/png", "TiendApp Failed Step");
             jse.executeScript("browserstack_executor: {\"action\": \"setSessionStatus\", \"arguments\": {\"status\":\"failed\", \"reason\": \"Save canceled order without success\"}}");
 
-        }else{
+        } else {
             jse.executeScript("browserstack_executor: {\"action\": \"setSessionStatus\", \"arguments\": {\"status\": \"passed\", \"reason\": \"Save canceled order successfully!\"}}");
         }
         Session.getInstance().closeApp();

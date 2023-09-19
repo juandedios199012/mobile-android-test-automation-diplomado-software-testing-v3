@@ -3,7 +3,6 @@ package task;
 import activity.login.LoginScreen;
 import helper.DataProvider;
 import helper.JsonTestDataHelper;
-import io.cucumber.core.internal.com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,15 +13,15 @@ public class Login {
     LoginScreen loginScreen = new LoginScreen();
     DataProvider dataProvider = new DataProvider();
 
-    public void withTheData() throws JsonProcessingException {
+    public void withTheData() {
         logger.info("Empresa ingresada");
-        loginScreen.empresaTextBox.setText(dataProvider.getOrderData().getEmpresa());
+        loginScreen.empresaTextBox.setText(dataProvider.getLoginData().getEmpresa());
 
         logger.info("Usuario ingresado");
-        loginScreen.usuarioTextBox.setText(dataProvider.getOrderData().getUsuario());
+        loginScreen.usuarioTextBox.setText(dataProvider.getLoginData().getUsuario());
 
         logger.info("Clave ingresada");
-        loginScreen.passwordTextBox.setText(dataProvider.getOrderData().getClave());
+        loginScreen.passwordTextBox.setText(dataProvider.getLoginData().getClave());
 
         logger.info("Clic en el boton Aceptar");
         loginScreen.ingresarButton.click();

@@ -23,12 +23,12 @@ public class OrderCreateStepDefinition {
     CancelOrder cancelOrder = new CancelOrder();
 
     @Given("El vendedor inicia sesion")
-    public void elVendedorIniciaSesion() throws JsonProcessingException {
+    public void elVendedorIniciaSesion() {
         login.withTheData();
     }
 
     @And("El vendedor sincroniza la data")
-    public void elVendedorSincronizaLaData() throws JsonProcessingException {
+    public void elVendedorSincronizaLaData() {
         synchronization.synchronizaData();
     }
 

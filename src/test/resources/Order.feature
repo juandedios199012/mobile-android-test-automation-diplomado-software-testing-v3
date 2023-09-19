@@ -17,6 +17,6 @@ Feature: Sales Force Order
     Then se actualiza el estado del Pedido a "ANULADO"
     And y el estado de Operacion de la Anulacion "Anular"
     Examples:
-      | cliente                         | tipo            |
-      | ESCALANTE MARIÑO, ADELMA        | Portafolio      |
-      | PUCUTAY PALMA, FELICITA EDELINA | Fuerza de Venta |
+      | cliente                            | tipo            |
+      | Arizaca Callejas, Guisela Libertad | Portafolio      |
+      | Baudazio Sanchez, Juan De Dios     | Fuerza de Venta |

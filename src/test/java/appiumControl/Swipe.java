@@ -28,19 +28,19 @@ public class Swipe {
         pointOptionStart = PointOption.point(dims.width / 2, dims.height / 2);
 
         switch (dir) {
-            case DOWN: // center of footer
+            case DOWN:
                 pointOptionEnd = PointOption.point(dims.width / 2, dims.height - edgeBorder);
                 irSiguientePantalla();
                 break;
-            case UP: // center of header
+            case UP:
                 pointOptionEnd = PointOption.point(dims.width / 2, edgeBorder);
                 irSiguientePantalla();
                 break;
-            case LEFT: // center of left side
+            case LEFT:
                 pointOptionEnd = PointOption.point(edgeBorder, dims.height / 2);
                 irSiguientePantalla();
                 break;
-            case RIGHT: // center of right side
+            case RIGHT:
                 pointOptionEnd = PointOption.point(dims.width - edgeBorder, dims.height / 2);
                 irSiguientePantalla();
                 break;

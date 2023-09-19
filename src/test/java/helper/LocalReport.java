@@ -24,7 +24,7 @@ public class LocalReport {
         configuration.addClassifications("S.O", "Android");
         configuration.addClassifications("Congreso", "Testing Bolivia 2023");
         configuration.addClassifications("Anfitrion", "Universidad Privada de Santa Cruz de la Sierra");
-        configuration.setTrendsStatsFile(new File( "reports/trends.json"));
+        configuration.setTrendsStatsFile(new File("reports/trends.json"));
 
         ReportBuilder reportBuilder = new ReportBuilder(jsonFiles, configuration);
         reportBuilder.generateReports();

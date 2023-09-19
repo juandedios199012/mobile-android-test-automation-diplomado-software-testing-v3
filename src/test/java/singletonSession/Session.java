@@ -3,14 +3,12 @@ package singletonSession;
 import factoryDevices.FactoryDevice;
 import io.appium.java_client.AppiumDriver;
 
-import java.io.IOException;
-
 public class Session {
 
     private static Session session = null;
     private AppiumDriver driver;
 
-    private Session(){
+    private Session() {
         driver = FactoryDevice.make("androidCloud").create();
     }
 
