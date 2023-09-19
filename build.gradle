@@ -78,10 +78,6 @@ task cloud() {
     }
 }
 
-task cleanProject(type: Delete) {
-    delete 'build', 'reports'
-}
-
 task report(type: JavaExec) {
     group = "Execution"
     description = "Run the main class with JavaExecTask"
