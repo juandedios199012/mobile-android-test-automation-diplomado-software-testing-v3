@@ -22,7 +22,7 @@ public class AndroidCloud implements IDevice {
         caps.setCapability("browserstack.key", readBrowserStackFile.getKey());
 
         // Set URL of the application under test
-        caps.setCapability("app", "bs://0c303b0b8d85d9b11bcdb72cc29f0edd27d8e487");
+        caps.setCapability("app", "bs://f7596417db164a2ee28b379c50f86c2e3801e545");
 
         // Specify device and os_version for testing
         caps.setCapability("device", "Google Pixel 3");
