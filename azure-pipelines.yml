@@ -52,4 +52,4 @@ steps:
       scriptType: 'ps'
       scriptLocation: 'inlineScript'
       inlineScript: |
-        az storage blob upload-batch --account-name cucumbertestreport --account-key $(StorageAccountKey) --destination testreport --source reports/cucumber/FlexBusinessMobile/cucumber-html-reports --type block
+        az storage blob upload-batch --account-name cucumbertestreport01 --account-key $(StorageAccountKey) --destination testreport --source reports/cucumber/FlexBusinessMobile/cucumber-html-reports --type block
