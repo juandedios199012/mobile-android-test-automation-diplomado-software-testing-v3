@@ -88,3 +88,7 @@ https://www.youtube.com/watch?v=HDR-fm32Lnk
 ### Continuous Integration - Azure Pipeline
 
 - Delete .jar in the field Contents Copy files task
+
+### Eliminar los archivos .html del reporte de cucumber ubicados en el contendor
+- script: 'az storage blob delete-batch --source $web --account-name hubtestinglab --connection-string "DefaultEndpointsProtocol=https;AccountName=hubtestinglab;AccountKey=Me5PyyzkfepXLoDzG4gzeNYaiji+oF5D7K+/Vs0r19pZ5g3P+MlDeQc/nqJ0SttVGRQ0GlJPxBK/+AStmaLB/g==;EndpointSuffix=core.windows.net"'
+  displayName: 'Delete Reporte'
