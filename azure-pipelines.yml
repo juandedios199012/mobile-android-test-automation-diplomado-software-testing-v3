@@ -7,7 +7,7 @@ trigger:
   - main  # Puedes ajustar la rama desencadenante según tu configuración
 
 pool:
-  name: PortafolioAG  # Puedes ajustar la imagen de la máquina según tus necesidades
+  name: SelfHostedAgentPools  # Puedes ajustar la imagen de la máquina según tus necesidades
 
 steps:
   - script: 'gradlew clean cloud'
