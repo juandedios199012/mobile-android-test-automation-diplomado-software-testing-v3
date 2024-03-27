@@ -42,7 +42,7 @@ steps:
       scriptType: 'ps'
       scriptLocation: 'inlineScript'
       inlineScript: |
-        $storageAccountKey = az storage account keys list --resource-group GR-QA --account-name appiumtestreport --query '[0].value' --output tsv
+        $storageAccountKey = az storage account keys list --resource-group rg-qa-001 --account-name storageqa001 --query '[0].value' --output tsv
         echo "##vso[task.setvariable variable=StorageAccountKey]$storageAccountKey"
 
   - task: AzureCLI@2
@@ -52,4 +52,4 @@ steps:
       scriptType: 'ps'
       scriptLocation: 'inlineScript'
       inlineScript: |
-        az storage blob upload-batch --account-name appiumtestreport --account-key $(StorageAccountKey) --destination '$web' --source reports/cucumber/FlexBusinessMobile/cucumber-html-reports --type block
+        az storage blob upload-batch --account-name storageqa001 --account-key $(StorageAccountKey) --destination '$web' --source reports/cucumber/FlexBusinessMobile/cucumber-html-reports --type block
