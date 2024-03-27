@@ -38,7 +38,7 @@ steps:
   - task: AzureCLI@2
     displayName: 'Obtener clave de acceso a la cuenta de almacenamiento'
     inputs:
-      azureSubscription: 'AzureResourceManager'
+      azureSubscription: 'AzureResourceManagerServicePrincipalManual'
       scriptType: 'ps'
       scriptLocation: 'inlineScript'
       inlineScript: |
@@ -48,7 +48,7 @@ steps:
   - task: AzureCLI@2
     displayName: 'Cargar los archivos de cucumber-report al contenedor'
     inputs:
-      azureSubscription: 'AzureResourceManager'
+      azureSubscription: 'AzureResourceManagerServicePrincipalManual'
       scriptType: 'ps'
       scriptLocation: 'inlineScript'
       inlineScript: |
