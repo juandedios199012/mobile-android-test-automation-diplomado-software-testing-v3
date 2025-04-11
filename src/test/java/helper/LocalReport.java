@@ -22,8 +22,10 @@ public class LocalReport {
         Configuration configuration = new Configuration(report, "Flex Business Mobile");
         configuration.setBuildNumber(version);
         configuration.addClassifications("S.O", "Android");
-        configuration.addClassifications("Congreso", "Testing Bolivia 2023");
-        configuration.addClassifications("Anfitrion", "Universidad Privada de Santa Cruz de la Sierra");
+        configuration.addClassifications("Evento", "Testing Day Argentina 2025");
+        configuration.addClassifications("Organizado por", "Say Quality");
+        configuration.addClassifications("Lugar", "Universidad de Mendoza");
+        configuration.addClassifications("Somos", "Testing Perú");
         configuration.setTrendsStatsFile(new File("reports/trends.json"));
 
         ReportBuilder reportBuilder = new ReportBuilder(jsonFiles, configuration);
