@@ -96,31 +96,55 @@ jobs:
   # ───────────────────────────────────────────
   #  JOB 4  ·  COLLECTOR  (solo si Test falló)
   # ───────────────────────────────────────────
+  # ── JOB 2 · COLLECTOR  (solo si Test falló) ───────────────────────────
   - job: Collector
     displayName: "Collector Job"
-    dependsOn: Reporte
-    condition: failed('Test')          # ⇦ se ejecuta solo si Test falló
+    dependsOn: Test
+    condition: failed('Test')
+    pool: { name: SelfHostedAgentPools }
 
     steps:
+      # 1) Descarga el artefacto publicado en el job Test
       - download: current
-        artifact: FlexBusinessMobileTest
+        artifact: FlexBusinessMobileTest          # ← nombre exacto del artifact
 
-      - script: |
-          echo "Empaquetando artefactos de fallos…"
-          mkdir -p artifacts
-          # Copia cucumber.json (ajusta la ruta si cambia)
-          find . -name "cucumber.json" -exec cp {} artifacts/ \;
-          # Copia logs si existen
-          if [ -d "$(System.DefaultWorkingDirectory)/build/logs" ]; then
-            cp -r $(System.DefaultWorkingDirectory)/build/logs artifacts/
-          fi
-        displayName: "Construir paquete de fallos"
+      # 2) Copia el directorio cucumber‑html‑reports + report.json
+      - powershell: |
+          Write-Host "Empaquetando artefactos de fallos…"
+          
+          # Ruta raíz del artifact descargado
+          $artifactRoot = "$(Pipeline.Workspace)\FlexBusinessMobileTest"
+          
+          # Destino local (será publicado luego)
+          $dest = "$(System.DefaultWorkingDirectory)\artifacts"
+          New-Item -Path $dest -ItemType Directory -Force | Out-Null
+          
+          # Directorio HTML
+          $reportDir = Join-Path $artifactRoot "reports\FlexBusinessMobile\cucumber-html-reports"
+          if (Test-Path $reportDir) {
+              Copy-Item -Recurse -Force $reportDir $dest
+              Write-Host "Copiado $reportDir"
+          } else {
+              Write-Warning "No se encontró $reportDir"
+          }
+          
+          # JSON (si existe)
+          $json = Join-Path $artifactRoot "reports\report.json"
+          if (Test-Path $json) {
+              Copy-Item -Force $json $dest
+              Write-Host "Copiado $json"
+          } else {
+              Write-Warning "report.json no encontrado"
+          }
+        displayName: "Copiar reportes fallidos"
 
+      # 3) Publica los archivos para QA‑Copilot
       - task: PublishBuildArtifacts@1
         displayName: "Publicar FailArtifacts"
         inputs:
-          pathToPublish: 'artifacts'
-          ArtifactName: FailArtifacts
+          pathToPublish: '$(System.DefaultWorkingDirectory)\artifacts'
+          artifactName: FailArtifacts
+
 
   # ───────────────────────────────────────────
   #  JOB 5  ·  QA‑COPILOT  (IA RCA + PDF)
