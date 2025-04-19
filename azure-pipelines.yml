@@ -148,6 +148,7 @@ jobs:
   - job: InstallPython
     displayName: "Install Python 3.11 (self‑hosted agent)"
     dependsOn: Collector
+    condition: always()
     pool: { name: SelfHostedAgentPools }
 
     steps:
