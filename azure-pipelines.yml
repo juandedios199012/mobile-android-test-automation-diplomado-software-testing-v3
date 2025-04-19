@@ -37,7 +37,7 @@ jobs:
         displayName: 'Generate Report'
 
   # ── Job 3 ─ Azure CLI ───────────────────────────
-  - job: Azure-CLI
+  - job: Azure_CLI
     condition: always()
     steps:
       # Agregar ruta de Azure CLI en las variables de entorno del agente
