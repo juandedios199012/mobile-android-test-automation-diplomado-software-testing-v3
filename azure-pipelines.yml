@@ -144,69 +144,13 @@ jobs:
           pathToPublish: '$(System.DefaultWorkingDirectory)\artifacts'
           artifactName: FailArtifacts
 
-  # ── JOB · INSTALL PYTHON ────────────────────────────────────────────────
-  - job: InstallPython
-    displayName: "Ensure Python 3.13 is present"
-    dependsOn: Collector
-    condition: always()
-    pool: { name: SelfHostedAgentPools }
-
-    steps:
-      - powershell: |
-          # 1) ¿Python 3.13+ ya está en PATH?
-          $pythonExe = (& where.exe python.exe 2>$null) -split "`r?`n" | Select-Object -First 1
-          if ($pythonExe) {
-              $ver = & $pythonExe --version
-              if ($ver -match 'Python 3\.(1[1-9]|[2-9]\d)') {
-                  Write-Host "Python ya instalado: $ver – omitimos instalación."
-                  exit 0
-              }
-          }
-          
-          Write-Host "Python 3.13 no encontrado. Procediendo a instalar…"
-          
-          # 2) Descargar el instalador
-          $url       = "https://www.python.org/ftp/python/3.13.3/python-3.13.3-amd64.exe"
-          $installer = "$env:TEMP\python-3.13.3-amd64.exe"
-          Invoke-WebRequest -Uri $url -OutFile $installer
-          
-          # 3) Instalar en modo silencioso
-          Start-Process -FilePath $installer `
-                        -ArgumentList "/quiet InstallAllUsers=1 PrependPath=1" `
-                        -Wait
-          
-          # 4) Localizar python.exe tras la instalación
-          Write-Host "Buscando python.exe en PATH…"
-          $pythonExe = (& where.exe python.exe 2>$null) -split "`r?`n" | Select-Object -First 1
-          
-          if (-not $pythonExe) {
-              Write-Host "No hallado en PATH, buscando en Program Files…"
-              $candidate = Get-ChildItem "$Env:ProgramFiles" -Directory -Filter "Python313*" |
-                           Sort-Object LastWriteTime -Descending |
-                           Select-Object -First 1
-              if ($candidate) { $pythonExe = "$($candidate.FullName)\python.exe" }
-          }
-          
-          if ($pythonExe -and (Test-Path $pythonExe)) {
-              # 5) Actualizar PATH de esta sesión
-              $pythonDir = Split-Path $pythonExe -Parent
-              $env:PATH = "$pythonDir;$pythonDir\Scripts;"+$env:PATH
-              Write-Host "python.exe localizado en $pythonExe"
-              Write-Host "Versión instalada: $(& $pythonExe --version)"
-              exit 0
-          } else {
-              Write-Warning "python.exe NO encontrado tras la instalación."
-              exit 1
-          }
-        displayName: "Check, Install & Locate Python 3.13+"
-
 
   # ───────────────────────────────────────────
   #  JOB 5  ·  QA‑COPILOT  (IA RCA + PDF)
   # ───────────────────────────────────────────
   - job: QA_Copilot
     displayName: "AI Root‑Cause & Executive Report"
-    dependsOn: InstallPython
+    dependsOn: Collector
     condition: succeeded('Collector')      # Collector debe haber ido OK
     pool: { name: SelfHostedAgentPools }
 
