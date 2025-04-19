@@ -39,6 +39,7 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    ignoreFailures = false              // Asegura que la tarea 'test' falle si JUnit falla
 }
 
 configurations {
@@ -47,35 +48,40 @@ configurations {
     }
 }
 
-task cucumber() {
-    dependsOn assemble, testClasses
-    doLast {
-        javaexec {
-            main = "io.cucumber.core.cli.Main"
-            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
-            args = [
-                    '--plugin', 'pretty',
-                    //'--plugin', 'html:target/cucumber-report.html',
-                    '--plugin', 'json:build/reports/cucumber/report.json',
-                    '--glue', 'runner', 'src/test/resources',
-                    'src/test/resources', '--tags'] + [suite]
-        }
-    }
+/** Task genérico para Cucumber (por suite) */
+task cucumber(type: JavaExec) {
+    group = "verification"
+    description = "Run all Cucumber features"
+    mainClass = "io.cucumber.core.cli.Main"
+    classpath   = configurations.cucumberRuntime +
+            sourceSets.main.output +
+            sourceSets.test.output
+
+    args '--plugin', 'pretty',
+            '--plugin', 'json:build/reports/cucumber/report.json',
+            '--glue',   'runner',
+            'src/test/resources'
+
+    // Garantiza que Gradle falle si Cucumber devuelve código ≠ 0
+    ignoreExitValue = false
 }
 
-task cloud() {
-    dependsOn assemble, testClasses
-    doLast {
-        javaexec {
-            main = "io.cucumber.core.cli.Main"
-            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
-            args = [
-                    '--plugin', 'pretty',
-                    '--plugin', 'json:reports/cucumber/report.json',
-                    '--glue', 'runner', 'src/test/resources',
-                    '--tags', '@SalesForceOrder']
-        }
-    }
+/** Task que ejecuta solo la suite @SalesForceOrder en BrowserStack */
+task cloud(type: JavaExec) {
+    group       = "verification"
+    description = "Run Cucumber @SalesForceOrder on BrowserStack"
+    mainClass   = "io.cucumber.core.cli.Main"
+    classpath   = configurations.cucumberRuntime +
+            sourceSets.main.output +
+            sourceSets.test.output
+
+    args '--plugin', 'pretty',
+            '--plugin', 'json:reports/cucumber/report.json',
+            '--glue', 'runner',
+            'src/test/resources',
+            '--tags', '@SalesForceOrder'
+
+    ignoreExitValue = false           // Propaga fallo al exit‑code de Gradle
 }
 
 task report(type: JavaExec) {

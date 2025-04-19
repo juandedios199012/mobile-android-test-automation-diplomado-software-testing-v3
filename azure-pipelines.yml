@@ -24,7 +24,7 @@ jobs:
       # 1 Ejecuta las pruebas (Cloud = BrowserStack)
       - script: 'gradlew clean cloud'
         displayName: 'Run Tests'
-        continueOnError: true          # deja seguir al job aunque las pruebas fallen
+      #  continueOnError: true          # deja seguir al job aunque las pruebas fallen
 
       # 2 Genera el reporte HTML/JSON
       - script: 'gradlew report'
