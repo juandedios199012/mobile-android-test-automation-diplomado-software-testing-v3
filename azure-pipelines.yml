@@ -12,9 +12,6 @@ pool:
 
 # ───────── variables globales del pipeline ─────────
 
-variables:
-  # 1) Trae los secretos desde el grupo “pipeline‑secrets”
-- group: pipeline-secrets          # secrets ADO_PAT, OPENAI_API_KEY
 
 # ───────────────────────────────────────────
 #  JOB 1  ·  TEST & REPORT
