@@ -4,52 +4,168 @@
 # https://aka.ms/yaml
 
 trigger:
-  - main  # Puedes ajustar la rama desencadenante según tu configuración
+  - main            # rama que dispara la pipeline
 
+# pool raíz ⇒ valor por omisión para todos los jobs
 pool:
-  name: SelfHostedAgentPools  # Puedes ajustar la imagen de la máquina según tus necesidades
+  name: SelfHostedAgentPools
 
-steps:
-  - script: 'gradlew clean cloud'
-    displayName: 'Run Test'
-    continueOnError: true
+# ───────── variables globales del pipeline ─────────
+variables:
+  # 1) Trae los secretos desde el grupo “pipeline‑secrets”
+  - group: pipeline-secrets      #  ← crea este Variable Group en Library
+    #     y guarda allí ADO_PAT + OPENAI_API_KEY como secretos
 
-  - script: 'gradlew report'
-    displayName: 'Generate Report'
+  # 2) Otras variables no secretas
+    system.debug: false
 
-  - powershell: '$env:Path += ";C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin"'
-    displayName: 'Path Azure CLI'
+# ───────────────────────────────────────────
+#  JOB 1  ·  TEST & REPORT
+# ───────────────────────────────────────────
+jobs:
+  - job: Test
+    displayName: "Build & Run Tests"
+    steps:
 
-  - task: CopyFiles@2
-    displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-    inputs:
-      SourceFolder: '$(system.defaultworkingdirectory)'
-      Contents: '**/*'
-      TargetFolder: '$(build.artifactstagingdirectory)'
-    condition: succeededOrFailed()
+      # 1 Ejecuta las pruebas (Cloud = BrowserStack)
+      - script: 'gradlew clean cloud'
+        displayName: 'Run Tests'
+        continueOnError: true          # deja seguir al job aunque las pruebas fallen
 
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: FlexBusiness Mobile'
-    inputs:
-      PathtoPublish: '$(build.artifactstagingdirectory)'
-      ArtifactName: FlexBusinessMobileTest
-    condition: succeededOrFailed()
+      # 2 Genera el reporte HTML/JSON
+      - script: 'gradlew report'
+        displayName: 'Generate Report'
 
-  - task: AzureCLI@2
-    displayName: 'Obtener clave de acceso a la cuenta de almacenamiento'
-    inputs:
-      azureSubscription: 'AzureResourceManagerServicePrincipalManual'
-      scriptType: 'ps'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        $storageAccountKey = az storage account keys list --resource-group rg-qa-001 --account-name storageqa001 --query '[0].value' --output tsv
-        echo "##vso[task.setvariable variable=StorageAccountKey]$storageAccountKey"
+      # 2.1 Agregar ruta de Azure CLI en las variables de entorno del agente
+      - powershell: '$env:Path += ";C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin"'
+        displayName: 'Path Azure CLI'
 
-  - task: AzureCLI@2
-    displayName: 'Cargar los archivos de cucumber-report al contenedor'
-    inputs:
-      azureSubscription: 'AzureResourceManagerServicePrincipalManual'
-      scriptType: 'ps'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        az storage blob upload-batch --account-name storageqa001 --account-key $(StorageAccountKey) --destination '$web' --source reports/cucumber/FlexBusinessMobile/cucumber-html-reports --type block
+      # 3 Copia SOLO el reporte (no todo el repo)
+      - task: CopyFiles@2
+        displayName: 'Copy Cucumber Report to Staging'
+        inputs:
+          SourceFolder: '$(system.defaultworkingdirectory)'
+          Contents: '**/*'
+          TargetFolder: '$(build.artifactstagingdirectory)'
+        condition: succeededOrFailed()
+
+      # 4 Publica el artefacto de reporte
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifact: FlexBusiness Mobile'
+        inputs:
+          PathtoPublish: '$(build.artifactstagingdirectory)'
+          ArtifactName: FlexBusinessMobileTest
+        condition: succeededOrFailed()
+
+      # 5 Obtiene la storagekey ─ (opcional: solo si sigues usando blob estático)
+      - task: AzureCLI@2
+        displayName: 'Obtener clave de acceso a la cuenta de almacenamiento'
+        inputs:
+          azureSubscription: 'AzureResourceManagerServicePrincipalManual'
+          scriptType: 'ps'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            $storageAccountKey = az storage account keys list `
+              --resource-group rg-qa-001 `
+              --account-name  storageqa001 `
+              --query '[0].value' --output tsv
+            echo "##vso[task.setvariable variable=StorageAccountKey;issecret=true]$storageAccountKey"
+        condition: succeededOrFailed()
+
+      # 6 Sube el reporte al sitio estático (opcional)
+      - task: AzureCLI@2
+        displayName: 'Cargar los archivos de cucumber-report al contenedor'
+        inputs:
+          azureSubscription: 'AzureResourceManagerServicePrincipalManual'
+          scriptType: 'ps'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            az storage blob upload-batch `
+              --account-name storageqa001 `
+              --account-key  $(StorageAccountKey) `
+              --destination  '$web' `
+              --source       reports/cucumber/FlexBusinessMobile/cucumber-html-reports `
+              --type block
+        condition: succeededOrFailed()
+
+  # ───────────────────────────────────────────
+  #  JOB 2  ·  COLLECTOR  (solo si Test falló)
+  # ───────────────────────────────────────────
+  - job: Collector
+    displayName: "Collector Job"
+    dependsOn: Test
+    condition: failed('Test')          # ⇦ se ejecuta solo si Test falló
+
+    steps:
+      - download: current
+        artifact: CucumberReport
+
+      - script: |
+          echo "Empaquetando artefactos de fallos…"
+          mkdir -p artifacts
+          # Copia cucumber.json (ajusta la ruta si cambia)
+          find . -name "cucumber.json" -exec cp {} artifacts/ \;
+          # Copia logs si existen
+          if [ -d "$(System.DefaultWorkingDirectory)/build/logs" ]; then
+            cp -r $(System.DefaultWorkingDirectory)/build/logs artifacts/
+          fi
+        displayName: "Construir paquete de fallos"
+
+      - task: PublishBuildArtifacts@1
+        displayName: "Publicar FailArtifacts"
+        inputs:
+          pathToPublish: 'artifacts'
+          ArtifactName: FailArtifacts
+
+  # ───────────────────────────────────────────
+  #  JOB 3  ·  QA‑COPILOT  (IA RCA + PDF)
+  # ───────────────────────────────────────────
+  - job: QA_Copilot
+    displayName: "AI Root‑Cause & Executive Report"
+    dependsOn: Collector
+    condition: succeeded('Collector')   # solo si se generaron fallos
+    pool: { name: SelfHostedAgentPools }
+
+    steps:
+      # 1 Descarga los artefactos de fallos
+      - download: current
+        artifact: FailArtifacts
+
+      # 2 Genera el RCA con GPT‑4o
+      - task: PythonScript@0
+        displayName: "Generar RCA (markdown)"
+        inputs:
+          scriptSource: inline
+          script: |
+            import os, subprocess, pathlib
+            subprocess.run(
+              "python scripts/generate_rca.py "
+              "--cucumber FailArtifacts/cucumber.json "
+              "--logs FailArtifacts/logs "
+              "--output rca.md",
+              shell=True, check=True
+            )
+        env:
+          OPENAI_API_KEY: $(OPENAI_API_KEY)
+
+      # 3 Convierte md → PDF (WeasyPrint)
+      - script: |
+          pip install weasyprint
+          weasyprint rca.md rca.pdf
+        displayName: "Convertir a PDF"
+
+      # 4 Publica el PDF como artefacto
+      - task: PublishBuildArtifacts@1
+        displayName: "Publicar RCA_Report"
+        inputs:
+          PathtoPublish: 'rca.pdf'
+          ArtifactName: RCA_Report
+
+      # 5 Comenta el Pull Request con el resumen
+      - bash: |
+          python scripts/post_to_ado.py \
+            --pr $(System.PullRequest.PullRequestId) \
+            --file rca.md
+        displayName: "Comentar RCA en PR"
+        env:
+          ADO_PAT: $(ADO_PAT)           # token con permiso para comentar PR
