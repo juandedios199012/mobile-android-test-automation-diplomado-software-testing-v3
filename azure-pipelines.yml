@@ -96,10 +96,9 @@ jobs:
   # ───────────────────────────────────────────
   #  JOB 4  ·  COLLECTOR  (solo si Test falló)
   # ───────────────────────────────────────────
-  # ── JOB 2 · COLLECTOR  (solo si Test falló) ───────────────────────────
   - job: Collector
     displayName: "Collector Job"
-    dependsOn: Test
+    dependsOn: Reporte
     condition: failed('Test')
     pool: { name: SelfHostedAgentPools }
 
@@ -144,7 +143,6 @@ jobs:
         inputs:
           pathToPublish: '$(System.DefaultWorkingDirectory)\artifacts'
           artifactName: FailArtifacts
-
 
   # ───────────────────────────────────────────
   #  JOB 5  ·  QA‑COPILOT  (IA RCA + PDF)
