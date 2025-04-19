@@ -3,13 +3,11 @@ package runner;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
-import io.cucumber.junit.Cucumber;
-import org.junit.runner.RunWith;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import singletonSession.Session;
 
-@RunWith(Cucumber.class)
+
 public class Runner {
 
     final JavascriptExecutor jse = Session.getInstance().getDriver();

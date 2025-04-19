@@ -10,28 +10,25 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.13.0-M2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.13.0-M2'
     // appium
     implementation 'org.seleniumhq.selenium:selenium-java:3.141.59'
     implementation 'io.appium:java-client:7.0.0'
 
     // cucumber
-    testImplementation 'io.cucumber:cucumber-junit:7.8.1'
-    implementation 'io.cucumber:cucumber-java:7.8.1'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.22.0'
+    implementation 'io.cucumber:cucumber-java:7.22.0'
 
     // https://mvnrepository.com/artifact/net.masterthought/cucumber-reporting
     //https://github.com/damianszczepanik/cucumber-reporting
-    implementation group: 'net.masterthought', name: 'cucumber-reporting', version: '5.7.4'
+    implementation group: 'net.masterthought', name: 'cucumber-reporting', version: '5.8.4'
 
     // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.19.0'
 
     // https://mvnrepository.com/artifact/com.aventstack/extentreports
     implementation group: 'com.aventstack', name: 'extentreports', version: '5.0.9'
-
-    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
-    //implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.14.2'
 
     // https://mvnrepository.com/artifact/com.github.javafaker/javafaker
     implementation group: 'com.github.javafaker', name: 'javafaker', version: '1.0.2'

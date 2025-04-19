@@ -1,13 +1,14 @@
 package runner;
 
 import activity.Order.OrdersListScreen;
-import io.cucumber.core.internal.com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.*;
 import task.*;
+
+
 
 public class OrderCreateStepDefinition {
 
@@ -44,7 +45,7 @@ public class OrderCreateStepDefinition {
 
     @Then("graba el pedido con el mensaje {string}")
     public void grabaElPedidoConElMensaje(String mensaje) {
-        Assert.assertEquals(mensaje, ordersListScreen.pedidoMensajeLabel.getText());
+        assertEquals(mensaje, ordersListScreen.pedidoMensajeLabel.getText());
     }
 
     @And("El vendedor selecciona un pedido")
@@ -61,12 +62,12 @@ public class OrderCreateStepDefinition {
 
     @Then("graba la modificacion con el mensaje {string}")
     public void grabaLaModificacionConElMensaje(String mensaje) {
-        Assert.assertEquals(mensaje, ordersListScreen.pedidoMensajeLabel.getText());
+        assertEquals(mensaje, ordersListScreen.pedidoMensajeLabel.getText());
     }
 
     @And("y el estado de Operacion {string}")
     public void yElEstadoDeOperacion(String operacion) {
-        Assert.assertEquals(operacion, ordersListScreen.operacionLabel.getText());
+        assertEquals(operacion, ordersListScreen.operacionLabel.getText());
     }
 
     @And("El vendedor Anula el pedido")
@@ -76,12 +77,12 @@ public class OrderCreateStepDefinition {
 
     @Then("se actualiza el estado del Pedido a {string}")
     public void seActualizaElEstadoDePedidoAAnulado(String mensaje) {
-        Assert.assertTrue(ordersListScreen.pedidoMensajeLabel.isControlDisplayed());
-        Assert.assertEquals(mensaje, ordersListScreen.pedidoMensajeLabel.getText());
+        assertTrue(ordersListScreen.pedidoMensajeLabel.isControlDisplayed());
+        assertEquals(mensaje, ordersListScreen.pedidoMensajeLabel.getText());
     }
 
     @And("y el estado de Operacion de la Anulacion {string}")
     public void yElEstadoDeOperacionDeLaAnulacion(String operacion) {
-        Assert.assertEquals(operacion, ordersListScreen.operacionLabel.getText());
+        assertEquals(operacion, ordersListScreen.operacionLabel.getText());
     }
 }
