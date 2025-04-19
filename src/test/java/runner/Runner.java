@@ -22,7 +22,7 @@ public class Runner {
     public void after(Scenario scenario) {
         if (scenario.isFailed()) {
             byte[] screen = Session.getInstance().getDriver().getScreenshotAs(OutputType.BYTES);
-            scenario.attach(screen, "image/png", "TiendApp Failed Step");
+            scenario.attach(screen, "image/png", "App Failed Step");
             jse.executeScript("browserstack_executor: {\"action\": \"setSessionStatus\", \"arguments\":" +
                     " {\"status\":\"failed\", \"reason\": \"Save canceled order without success\"}}");
 

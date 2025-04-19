@@ -76,7 +76,7 @@ task cloud(type: JavaExec) {
             sourceSets.test.output
 
     args '--plugin', 'pretty',
-            '--plugin', 'json:reports/cucumber/report.json',
+            '--plugin', 'json:reports/report.json',
             '--glue', 'runner',
             'src/test/resources',
             '--tags', '@SalesForceOrder'
