@@ -151,24 +151,25 @@ jobs:
   - job: QA_Copilot
     displayName: "AI Root‑Cause & Executive Report"
     dependsOn: Collector
-    condition: succeeded('Collector')      # Collector debe haber ido OK
+    condition: succeeded('Collector')
     pool: { name: SelfHostedAgentPools }
 
     steps:
-      # 1) Descarga el artefacto con los reportes fallidos
+      # 1) Descarga artefactos
       - download: current
         artifact: FailArtifacts
 
-      # 2) Instala dependencias Python y genera el markdown
+      # 2) Instala deps y genera el markdown con 'py -3'
       - powershell: |
-          python -m pip install --upgrade pip
-          pip install openai weasyprint requests   # depende de tus scripts
+          Write-Host "Actualizando pip e instalando dependencias..."
+          py -3 -m pip install --upgrade pip
+          py -3 -m pip install openai weasyprint requests
           
           $cucumber = "$(Pipeline.Workspace)\FailArtifacts\reports\report.json"
           $logs     = "$(Pipeline.Workspace)\FailArtifacts\logs"
           
-          Write‑Host "Generando rca.md con GPT‑4o…"
-          python scripts/generate_rca.py `
+          Write-Host "Generando rca.md con GPT‑4o…"
+          py -3 scripts\generate_rca.py `
                  --cucumber $cucumber `
                  --logs     $logs `
                  --output   rca.md
@@ -176,20 +177,21 @@ jobs:
         env:
           OPENAI_API_KEY: $(OPENAI_API_KEY)
 
-      # 3) Convertir a PDF
-      - powershell: weasyprint rca.md rca.pdf
+      # 3) Convertir md → PDF
+      - powershell: |
+          py -3 -m weasyprint rca.md rca.pdf
         displayName: "Convertir md → PDF"
 
-      # 4) Publicar el PDF
+      # 4) Publicar PDF
       - task: PublishBuildArtifacts@1
         displayName: "Publicar RCA_Report"
         inputs:
           PathtoPublish: 'rca.pdf'
           ArtifactName: RCA_Report
 
-      # 5) Comentar el Pull Request
+      # 5) Comentar en PR
       - powershell: |
-          python scripts/post_to_ado.py `
+          py -3 scripts\post_to_ado.py `
                  --pr $(System.PullRequest.PullRequestId) `
                  --file rca.md
         displayName: "Comentar RCA en PR"
