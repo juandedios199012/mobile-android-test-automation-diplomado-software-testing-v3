@@ -155,16 +155,25 @@ jobs:
       - powershell: |
           Write-Host "Descargando instalador oficial de Python 3.13.3..."
           $url       = "https://www.python.org/ftp/python/3.13.3/python-3.13.3-amd64.exe"
-          $installer = "$env:TEMP\python-installer.exe"
+          $installer = "$env:TEMP\python-3.13.3-amd64.exe"
           Invoke-WebRequest -Uri $url -OutFile $installer
           
           Write-Host "Instalando Python en modo silencioso..."
           Start-Process -FilePath $installer -ArgumentList `
               "/quiet InstallAllUsers=1 PrependPath=1" -Wait
           
+          # --- AÑADIR python.exe a la ruta de ESTA sesión ------------------
+          $pyRoot = "C:\Program Files\Python313"         # ruta por defecto del instalador
+          if (Test-Path "$pyRoot\python.exe") {
+          $env:PATH += ";$pyRoot;$pyRoot\Scripts"
+          Write-Host "PATH actualizado para esta sesión:"
+          Write-Host $env:PATH
           Write-Host "Versión instalada:"
-          python --version
-        displayName: "Download & silent install"
+          & "$pyRoot\python.exe" --version
+          } else {
+            Write-Warning "No se encontró python.exe en $pyRoot"
+          }
+        displayName: "Download · Silent install · Verify"
 
   # ───────────────────────────────────────────
   #  JOB 5  ·  QA‑COPILOT  (IA RCA + PDF)
