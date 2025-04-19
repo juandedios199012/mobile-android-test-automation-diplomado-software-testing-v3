@@ -25,6 +25,7 @@ jobs:
       # 1 Ejecuta las pruebas (Cloud = BrowserStack)
       - script: 'gradlew clean cloud'
         displayName: 'Run Tests'
+      - publish _  # publica cucumber.json (condition: always())
       #  continueOnError: true          # deja seguir al job aunque las pruebas fallen
 
   # ── Job 2 ─ Azure CLI ───────────────────────────

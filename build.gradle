@@ -50,13 +50,13 @@ task cucumber(type: JavaExec) {
     group = "verification"
     description = "Run all Cucumber features"
     mainClass = "io.cucumber.core.cli.Main"
-    classpath   = configurations.cucumberRuntime +
+    classpath = configurations.cucumberRuntime +
             sourceSets.main.output +
             sourceSets.test.output
 
     args '--plugin', 'pretty',
             '--plugin', 'json:build/reports/cucumber/report.json',
-            '--glue',   'runner',
+            '--glue', 'runner',
             'src/test/resources'
 
     // Garantiza que Gradle falle si Cucumber devuelve código ≠ 0
@@ -65,18 +65,18 @@ task cucumber(type: JavaExec) {
 
 /** Task que ejecuta solo la suite @SalesForceOrder en BrowserStack */
 task cloud(type: JavaExec) {
-    group       = "verification"
+    group = "verification"
     description = "Run Cucumber @SalesForceOrder on BrowserStack"
-    mainClass   = "io.cucumber.core.cli.Main"
-    classpath   = configurations.cucumberRuntime +
+    mainClass = "io.cucumber.core.cli.Main"
+    classpath = configurations.cucumberRuntime +
             sourceSets.main.output +
             sourceSets.test.output
 
     args '--plugin', 'pretty',
-            '--plugin', 'json:reports/report.json',
-            '--glue', 'runner',
-            'src/test/resources',
-            '--tags', '@SalesForceOrder'
+         '--plugin', 'json:reports/report.json',
+         '--glue', 'runner',
+         'src/test/resources',
+         '--tags', '@SalesForceOrder'
 
     ignoreExitValue = false           // Propaga fallo al exit‑code de Gradle
 }
