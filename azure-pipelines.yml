@@ -15,8 +15,6 @@ pool:
 variables:
   # 1) Trae los secretos desde el grupo “pipeline‑secrets”
   - group: pipeline-secrets          # secrets: ADO_PAT, OPENAI_API_KEY
-  - name: system.debug               # ← otra entrada de la lista
-    value: 'false'                   #     (entre comillas)
 
 # ───────────────────────────────────────────
 #  JOB 1  ·  TEST & REPORT
