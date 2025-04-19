@@ -14,7 +14,7 @@ pool:
 
 
 # ───────────────────────────────────────────
-#  JOB 1  ·  TEST & REPORT
+#  JOB 1  ·  TEST
 # ───────────────────────────────────────────
 jobs:
   # ── Job 1 ─ Test ───────────────────────────
@@ -27,26 +27,24 @@ jobs:
         displayName: 'Run Tests'
       #  continueOnError: true          # deja seguir al job aunque las pruebas fallen
 
-  # ── Job 2 ─ Report ───────────────────────────
-  - job: Report
+  # ── Job 2 ─ Azure CLI ───────────────────────────
+  - job: Azure
     dependsOn: Test
-    condition: always()
-    steps:
-      # 2 Genera el reporte HTML/JSON
-      - script: 'gradlew report'
-        displayName: 'Generate Report'
-
-  # ── Job 3 ─ Azure CLI ───────────────────────────
-  - job: Azure_CLI
     condition: always()
     steps:
       # Agregar ruta de Azure CLI en las variables de entorno del agente
       - powershell: '$env:Path += ";C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin"'
         displayName: 'Path Azure CLI'
 
-  # ── Job 4 ─ Publicar Reporte ───────────────────────────
+  # ── Job 3 ─ Report ───────────────────────────
   - job: Reporte
+    dependsOn: Azure
+    condition: always()
     steps:
+      # 2 Genera el reporte HTML/JSON
+      - script: 'gradlew report'
+        displayName: 'Generate Report'
+
       # 3 Copia SOLO el reporte (no todo el repo)
       - task: CopyFiles@2
         displayName: 'Copy Cucumber Report to Staging'
@@ -100,7 +98,7 @@ jobs:
   # ───────────────────────────────────────────
   - job: Collector
     displayName: "Collector Job"
-    dependsOn: Test
+    dependsOn: Reporte
     condition: failed('Test')          # ⇦ se ejecuta solo si Test falló
 
     steps:
