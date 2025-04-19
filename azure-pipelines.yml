@@ -152,27 +152,55 @@ jobs:
     displayName: "AI Root‑Cause & Executive Report"
     dependsOn: Collector
     condition: succeeded('Collector')
-    pool: { name: SelfHostedAgentPools }
+    pool:
+      name: SelfHostedAgentPools
+    variables:
+      pyLauncher: ''
 
     steps:
-      # 1) Descargar el artefacto con los reportes fallidos
+      # 1) Descargar artefactos con los reportes fallidos
       - download: current
         artifact: FailArtifacts
 
-      # 2) Instalar/actualizar pip y las dependencias necesarias
+      # 2) Detectar el Python Launcher (py.exe) desde PowerShell
       - powershell: |
-          python -m pip install --upgrade pip
-          pip install openai weasyprint requests
+          Write-Host "Detectando py.exe en el agente…"
+
+          # Intentar where.exe
+          $exe = (& where.exe py.exe 2>$null) -split "`r?`n" | Select-Object -First 1
+
+          # Si no está en PATH, usar Get-Command
+          if (-not (Test-Path $exe)) {
+            $cmd = Get-Command py.exe -ErrorAction SilentlyContinue
+            if ($cmd) { $exe = $cmd.Source }
+          }
+
+          if (-not (Test-Path $exe)) {
+            Write-Error "No se encontró py.exe"
+            exit 1
+          }
+
+          Write-Host "py.exe localizado en: $exe"
+          Write-Host "Versión: $(& $exe -3 --version)"
+          Write-Host "##vso[task.setvariable variable=pyLauncher]$exe"
+        displayName: "Detectar Python Launcher"
+
+      # 3) Instalar/actualizar pip y las dependencias necesarias
+      - powershell: |
+          Write-Host "Instalando/upgradando pip y dependencias…"
+          & "$(pyLauncher)" -3 -m pip install --upgrade pip
+          & "$(pyLauncher)" -3 -m pip install openai weasyprint requests
         displayName: "Instalar dependencias Python"
         env:
           OPENAI_API_KEY: $(OPENAI_API_KEY)
 
-      # 3) Generar el markdown del RCA
+      # 4) Generar el markdown del RCA con tu script
       - powershell: |
           $cucumber = "$(Pipeline.Workspace)\FailArtifacts\reports\report.json"
           $logs     = "$(Pipeline.Workspace)\FailArtifacts\logs"
-          
-          python scripts\generate_rca.py `
+
+          Write-Host "Generando rca.md con GPT‑4o…"
+          & "$(pyLauncher)" -3 scripts\generate_rca.py `
               --cucumber $cucumber `
               --logs     $logs `
               --output   rca.md
@@ -180,21 +208,23 @@ jobs:
         env:
           OPENAI_API_KEY: $(OPENAI_API_KEY)
 
-      # 4) Convertir markdown → PDF
+      # 5) Convertir markdown → PDF
       - powershell: |
-          weasyprint rca.md rca.pdf
+          Write-Host "Renderizando PDF…"
+          & "$(pyLauncher)" -3 -m weasyprint rca.md rca.pdf
         displayName: "Convertir md → PDF"
 
-      # 5) Publicar el PDF como artefacto
+      # 6) Publicar el PDF como artefacto
       - task: PublishBuildArtifacts@1
         displayName: "Publicar RCA_Report"
         inputs:
           PathtoPublish: 'rca.pdf'
           ArtifactName: RCA_Report
 
-      # 6) Comentar el Pull Request
+      # 7) Comentar en el Pull Request usando el mismo launcher
       - powershell: |
-          python scripts\post_to_ado.py `
+          Write-Host "Comentando el Pull Request…"
+          & "$(pyLauncher)" -3 scripts\post_to_ado.py `
               --pr $(System.PullRequest.PullRequestId) `
               --file rca.md
         displayName: "Comentar RCA en PR"
