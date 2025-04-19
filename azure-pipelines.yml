@@ -170,9 +170,7 @@ jobs:
   # ───────────────────────────────────────────
   - job: QA_Copilot
     displayName: "AI Root‑Cause & Executive Report"
-    dependsOn:
-      - Collector
-      - InstallPython
+    dependsOn: InstallPython
     condition: succeeded('Collector')      # Collector debe haber ido OK
     pool: { name: SelfHostedAgentPools }
 
