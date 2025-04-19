@@ -144,6 +144,26 @@ jobs:
           pathToPublish: '$(System.DefaultWorkingDirectory)\artifacts'
           artifactName: FailArtifacts
 
+  # ── JOB · INSTALL PYTHON ────────────────────────────────────────────────
+  - job: InstallPython
+    displayName: "Install Python 3.13 (self‑hosted agent)"
+    pool: { name: SelfHostedAgentPools }
+
+    steps:
+      - powershell: |
+          Write‑Host "Descargando instalador oficial de Python 3.13.3…"
+          $url       = "https://www.python.org/ftp/python/3.13.3/python-3.13.3-amd64.exe"
+          $installer = "$env:TEMP\python-installer.exe"
+          Invoke-WebRequest -Uri $url -OutFile $installer
+          
+          Write‑Host "Instalando Python en modo silencioso…"
+          Start-Process -FilePath $installer -ArgumentList `
+              "/quiet InstallAllUsers=1 PrependPath=1" -Wait
+          
+          Write‑Host "Versión instalada:"
+          python --version
+        displayName: "Download & silent install"
+
   # ───────────────────────────────────────────
   #  JOB 5  ·  QA‑COPILOT  (IA RCA + PDF)
   # ───────────────────────────────────────────
