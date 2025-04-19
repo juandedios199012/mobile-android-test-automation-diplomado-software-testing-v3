@@ -152,8 +152,8 @@ jobs:
 
     steps:
       - powershell: |
-          Write-Host "Descargando instalador oficial de Python 3.11.9..."
-          $url       = "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe"
+          Write-Host "Descargando instalador oficial de Python 3.13.3..."
+          $url       = "https://www.python.org/ftp/python/3.13.3/python-3.13.3-amd64.exe"
           $installer = "$env:TEMP\python-installer.exe"
           Invoke-WebRequest -Uri $url -OutFile $installer
           
