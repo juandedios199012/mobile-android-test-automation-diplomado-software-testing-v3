@@ -146,21 +146,23 @@ jobs:
 
   # ── JOB · INSTALL PYTHON ────────────────────────────────────────────────
   - job: InstallPython
-    displayName: "Install Python 3.13 (self‑hosted agent)"
+    displayName: "Install Python 3.11 (self‑hosted agent)"
+    dependsOn:
+      - Collector
     pool: { name: SelfHostedAgentPools }
 
     steps:
       - powershell: |
-          Write‑Host "Descargando instalador oficial de Python 3.13.3…"
-          $url       = "https://www.python.org/ftp/python/3.13.3/python-3.13.3-amd64.exe"
+          Write-Host "Descargando instalador oficial de Python 3.11.9..."
+          $url       = "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe"
           $installer = "$env:TEMP\python-installer.exe"
           Invoke-WebRequest -Uri $url -OutFile $installer
           
-          Write‑Host "Instalando Python en modo silencioso…"
+          Write-Host "Instalando Python en modo silencioso..."
           Start-Process -FilePath $installer -ArgumentList `
               "/quiet InstallAllUsers=1 PrependPath=1" -Wait
           
-          Write‑Host "Versión instalada:"
+          Write-Host "Versión instalada:"
           python --version
         displayName: "Download & silent install"
 
@@ -169,50 +171,50 @@ jobs:
   # ───────────────────────────────────────────
   - job: QA_Copilot
     displayName: "AI Root‑Cause & Executive Report"
-    dependsOn: Collector
-    condition: succeeded('Collector')   # solo si se generaron fallos
+    dependsOn:
+      - Collector
+      - InstallPython
+    condition: succeeded('Collector')      # Collector debe haber ido OK
     pool: { name: SelfHostedAgentPools }
 
     steps:
-      # 1 Descarga los artefactos de fallos
+      # 1) Descarga el artefacto con los reportes fallidos
       - download: current
         artifact: FailArtifacts
 
-      # 2 Genera el RCA con GPT‑4o
-      - task: PythonScript@0
+      # 2) Instala dependencias Python y genera el markdown
+      - powershell: |
+          python -m pip install --upgrade pip
+          pip install openai weasyprint requests   # depende de tus scripts
+          
+          $cucumber = "$(Pipeline.Workspace)\FailArtifacts\reports\report.json"
+          $logs     = "$(Pipeline.Workspace)\FailArtifacts\logs"
+          
+          Write‑Host "Generando rca.md con GPT‑4o…"
+          python scripts/generate_rca.py `
+                 --cucumber $cucumber `
+                 --logs     $logs `
+                 --output   rca.md
         displayName: "Generar RCA (markdown)"
-        inputs:
-          scriptSource: inline
-          script: |
-            import os, subprocess, pathlib
-            subprocess.run(
-              "python scripts/generate_rca.py "
-              "--cucumber FailArtifacts/cucumber.json "
-              "--logs FailArtifacts/logs "
-              "--output rca.md",
-              shell=True, check=True
-            )
         env:
           OPENAI_API_KEY: $(OPENAI_API_KEY)
 
-      # 3 Convierte md → PDF (WeasyPrint)
-      - script: |
-          pip install weasyprint
-          weasyprint rca.md rca.pdf
-        displayName: "Convertir a PDF"
+      # 3) Convertir a PDF
+      - powershell: weasyprint rca.md rca.pdf
+        displayName: "Convertir md → PDF"
 
-      # 4 Publica el PDF como artefacto
+      # 4) Publicar el PDF
       - task: PublishBuildArtifacts@1
         displayName: "Publicar RCA_Report"
         inputs:
           PathtoPublish: 'rca.pdf'
           ArtifactName: RCA_Report
 
-      # 5 Comenta el Pull Request con el resumen
-      - bash: |
-          python scripts/post_to_ado.py \
-            --pr $(System.PullRequest.PullRequestId) \
-            --file rca.md
+      # 5) Comentar el Pull Request
+      - powershell: |
+          python scripts/post_to_ado.py `
+                 --pr $(System.PullRequest.PullRequestId) `
+                 --file rca.md
         displayName: "Comentar RCA en PR"
         env:
-          ADO_PAT: $(ADO_PAT)           # token con permiso para comentar PR
+          ADO_PAT: $(ADO_PAT)
