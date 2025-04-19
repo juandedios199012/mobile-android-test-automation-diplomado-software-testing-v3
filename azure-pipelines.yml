@@ -17,6 +17,7 @@ pool:
 #  JOB 1  ·  TEST & REPORT
 # ───────────────────────────────────────────
 jobs:
+  # ── Job 1 ─ Test ───────────────────────────
   - job: Test
     displayName: "Build & Run Tests"
     steps:
@@ -26,14 +27,26 @@ jobs:
         displayName: 'Run Tests'
       #  continueOnError: true          # deja seguir al job aunque las pruebas fallen
 
+  # ── Job 2 ─ Report ───────────────────────────
+  - job: Report
+    dependsOn: Test
+    condition: always()
+    steps:
       # 2 Genera el reporte HTML/JSON
       - script: 'gradlew report'
         displayName: 'Generate Report'
 
-      # 2.1 Agregar ruta de Azure CLI en las variables de entorno del agente
+  # ── Job 3 ─ Azure CLI ───────────────────────────
+  - job: Azure-CLI
+    condition: always()
+    steps:
+      # Agregar ruta de Azure CLI en las variables de entorno del agente
       - powershell: '$env:Path += ";C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin"'
         displayName: 'Path Azure CLI'
 
+  # ── Job 4 ─ Publicar Reporte ───────────────────────────
+  - job: Reporte
+    steps:
       # 3 Copia SOLO el reporte (no todo el repo)
       - task: CopyFiles@2
         displayName: 'Copy Cucumber Report to Staging'
@@ -83,7 +96,7 @@ jobs:
         condition: succeededOrFailed()
 
   # ───────────────────────────────────────────
-  #  JOB 2  ·  COLLECTOR  (solo si Test falló)
+  #  JOB 4  ·  COLLECTOR  (solo si Test falló)
   # ───────────────────────────────────────────
   - job: Collector
     displayName: "Collector Job"
@@ -112,7 +125,7 @@ jobs:
           ArtifactName: FailArtifacts
 
   # ───────────────────────────────────────────
-  #  JOB 3  ·  QA‑COPILOT  (IA RCA + PDF)
+  #  JOB 5  ·  QA‑COPILOT  (IA RCA + PDF)
   # ───────────────────────────────────────────
   - job: QA_Copilot
     displayName: "AI Root‑Cause & Executive Report"
