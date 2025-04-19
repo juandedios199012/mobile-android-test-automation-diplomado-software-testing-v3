@@ -89,7 +89,7 @@ jobs:
               --account-name storageqa001 `
               --account-key  $(StorageAccountKey) `
               --destination  '$web' `
-              --source       reports/cucumber/FlexBusinessMobile/cucumber-html-reports `
+              --source       reports/FlexBusinessMobile/cucumber-html-reports `
               --type block
         condition: succeededOrFailed()
 
@@ -103,7 +103,7 @@ jobs:
 
     steps:
       - download: current
-        artifact: CucumberReport
+        artifact: FlexBusinessMobileTest
 
       - script: |
           echo "Empaquetando artefactos de fallos…"
