@@ -18,7 +18,6 @@ def parse_args():
 def extract_failures(data):
     failures = []
     feature_name = None
-    # Determinar nombre de feature (.feature) a usar como encabezado
     if data:
         uri = data[0].get('uri', '')
         feature_name = os.path.splitext(os.path.basename(uri))[0]
@@ -72,32 +71,34 @@ def call_llm(prompt):
 
 def generate_pdf(feature_name, analysis, failures, output_pdf):
     styles = getSampleStyleSheet()
-    # Encabezados y estilos personalizados
-    styles.add(ParagraphStyle(
-        name="Title", fontSize=24, leading=28, alignment=1, textColor=colors.HexColor("#0B5394")
-    ))
-    styles.add(ParagraphStyle(
-        name="Section", fontSize=14, leading=18, textColor=colors.HexColor("#0B5394"), spaceAfter=6
-    ))
+    # Evitar redefinir estilos existentes usando nombres únicos
+    if "RcaTitle" not in styles:
+        styles.add(ParagraphStyle(
+            name="RcaTitle", fontSize=24, leading=28, alignment=1, textColor=colors.HexColor("#0B5394")
+        ))
+    if "RcaSection" not in styles:
+        styles.add(ParagraphStyle(
+            name="RcaSection", fontSize=14, leading=18, textColor=colors.HexColor("#0B5394"), spaceAfter=6
+        ))
 
     doc = SimpleDocTemplate(output_pdf, title="RCA Automatizado")
     story = []
 
     # Título y fecha
-    story.append(Paragraph("Informe de Análisis de Fallos Automatizado", styles["Title"]))
+    story.append(Paragraph("Informe de Análisis de Fallos Automatizado", styles["RcaTitle"]))
     story.append(Spacer(1, 6))
-    story.append(Paragraph(f"Feature: {feature_name}", styles["Section"]))
+    story.append(Paragraph(f"Feature: {feature_name}", styles["RcaSection"]))
     story.append(Paragraph(f"Fecha: {datetime.now().strftime('%d/%m/%Y')}", styles["Normal"]))
     story.append(Spacer(1, 12))
 
     # Resumen ejecutivo
-    story.append(Paragraph("Resumen Ejecutivo", styles["Section"]))
+    story.append(Paragraph("Resumen Ejecutivo", styles["RcaSection"]))
     for line in analysis.split('\n')[:2]:
         story.append(Paragraph(line, styles["BodyText"]))
     story.append(Spacer(1, 12))
 
     # Tabla de fallos
-    story.append(Paragraph("Resumen de Fallos", styles["Section"]))
+    story.append(Paragraph("Resumen de Fallos", styles["RcaSection"]))
     table_data = [["Scenario", "Step", "Error"]]
     for f in failures:
         table_data.append([f['scenario'], f['step'], f['error']])
@@ -112,19 +113,19 @@ def generate_pdf(feature_name, analysis, failures, output_pdf):
     story.append(table)
     story.append(Spacer(1, 12))
 
-    # Causa raíz y recomendaciones (LLM analysis completo)
-    story.append(Paragraph("Análisis Detallado", styles["Section"]))
+    # Análisis detallado (todo el bloque, no logs)
+    story.append(Paragraph("Análisis Detallado", styles["RcaSection"]))
     for paragraph in analysis.split('\n\n'):
         story.append(Paragraph(paragraph, styles["BodyText"]))
         story.append(Spacer(1, 6))
     story.append(Spacer(1, 12))
 
-    # Imágenes embebidas
+    # Imágenes empotradas
     for idx, f in enumerate(failures):
         if f.get('screenshot'):
             img_data = base64.b64decode(f['screenshot'])
             img_buf = BytesIO(img_data)
-            story.append(Paragraph(f"Captura de error en step: {f['step']}", styles["Section"]))
+            story.append(Paragraph(f"Captura en paso: {f['step']}", styles["RcaSection"]))
             story.append(Image(img_buf, width=400, height=300))
             story.append(Spacer(1, 12))
 
