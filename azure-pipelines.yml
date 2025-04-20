@@ -92,6 +92,7 @@ jobs:
               --destination  '$web' `
               --source       reports/FlexBusinessMobile/cucumber-html-reports `
               --type block
+              --overwrite true
         condition: succeededOrFailed()
 
   # ───────────────────────────────────────────
