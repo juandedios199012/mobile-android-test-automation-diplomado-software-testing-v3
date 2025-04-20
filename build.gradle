@@ -74,8 +74,7 @@ task cloud(type: JavaExec) {
 
     args '--plugin', 'pretty',
          '--plugin', 'json:reports/report.json',
-         '--glue', 'runner',
-         'src/test/resources',
+         '--glue', 'runner', 'src/test/resources',
          '--tags', '@SalesForceOrder'
 
     ignoreExitValue = false           // Propaga fallo al exit‑code de Gradle
