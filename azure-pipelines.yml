@@ -163,19 +163,13 @@ jobs:
 
       # 4) Generar el markdown del RCA
       - powershell: |
-          Write-Host "Generando rca.md y rca.pdf con GPT‑4o…"
+          Write-Host "Generando rca.pdf con GPT‑4o…"
           python scripts/generate_rca.py `
               --cucumber "$(Pipeline.Workspace)\FailArtifacts\report.json" `
               --output-pdf rca.pdf
         displayName: "Generar RCA (markdown + PDF)"
         env:
           OPENAI_API_KEY: $(OPENAI_API_KEY)
-
-      # 5) Convertir md → PDF con tu script Python
-      - powershell: |
-          Write-Host "Convertir rca.md → rca.pdf con ReportLab…"
-          python scripts/convert_to_pdf.py rca.md rca.pdf
-        displayName: "Convertir md → PDF con ReportLab"
 
       # 6) Publicar el PDF como artefacto
       - task: PublishBuildArtifacts@1
