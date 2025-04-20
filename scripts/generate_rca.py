@@ -63,7 +63,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 resp = openai.chat.completions.create(
     model="gpt-3.5-turbo",
     messages=[
-        {"role":"system","content":"Analiza fallos de Appium."},},
+        {"role":"system","content":"Analiza fallos de Appium."},
         {"role":"user","content": prompt}
     ],
     temperature=0.2
