@@ -1,52 +1,93 @@
-import json, os, openai, argparse, textwrap
+import os, json, base64, argparse, openai, markdown2
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, Table, TableStyle
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors
 
+# 1) Cargar y parsear JSON
 parser = argparse.ArgumentParser()
-parser.add_argument('--cucumber')
-parser.add_argument('--logs')
-parser.add_argument('--output')
+parser.add_argument('--cucumber', required=True)
+parser.add_argument('--output-md', default='rca.md')
+parser.add_argument('--output-pdf', default='rca.pdf')
 args = parser.parse_args()
 
-# 1. Extraer fallos relevantes
-with open(args.cucumber, encoding='utf‑8') as f:
-    cucumber = json.load(f)
+data = json.load(open(args.cucumber, encoding='utf8'))
 
-failed = []
-for feature in cucumber:
-    for element in feature['elements']:
-        for step in element['steps']:
-            if step['result']['status'] == 'failed':
-                failed.append({
-                    "feature": feature['name'],
-                    "scenario": element['name'],
-                    "error": step['result']['error_message'][:400]  # recorta
+# 2) Extraer fallos con pasos y capturas
+failures = []
+for feat in data:
+    for scen in feat.get('elements', []):
+        # buscar cualquier step failed
+        steps_info = []
+        for step in scen.get('steps', []):
+            status = step['result']['status']
+            steps_info.append(f"{step['keyword']}{step['name']} → {status}")
+            if status == 'failed':
+                # extraer primera imagen si existe
+                img = None
+                for emb in step.get('embeddings', []):
+                    if emb['mime_type'].startswith('image/'):
+                        img = emb['data']
+                        break
+                failures.append({
+                    'feature': feat['uri'],
+                    'scenario': scen['name'],
+                    'tags': [t['name'] for t in scen.get('tags', [])],
+                    'steps': steps_info,
+                    'failed_step': f"{step['keyword']}{step['name']}",
+                    'error': step['result']['error_message'],
+                    'screenshot': img
                 })
 
-# 2. Construir prompt
-summary = "\n".join(f"- **{f['scenario']}** ({f['feature']}): {f['error']}"
-                    for f in failed)
+# 3) Construir prompt dinámico
+prompt_lines = ["Eres un ingeniero QA Senior especializado en Appium. Analiza estos fallos:\n"]
+for f in failures:
+    prompt_lines.append(f"- Feature: {f['feature']}")
+    prompt_lines.append(f"  Scenario: {f['scenario']}")
+    prompt_lines.append(f"  Tags: {', '.join(f['tags'])}")
+    prompt_lines.append("  Steps:")
+    for s in f['steps']:
+        prompt_lines.append(f"    • {s}")
+    prompt_lines.append(f"  Error en step «{f['failed_step']}»: {f['error']}\n")
 
-prompt = textwrap.dedent(f"""
-Eres un ingeniero QA senior.
-Analiza estos fallos y proporciona:
-1. Causa raíz probable
-2. Impacto de negocio (alto/medio/bajo) explicado a gerentes
-3. Acciones correctivas y responsable sugerido
-4. Riesgo de recurrencia
-5. Breve TL;DR (máx 3 líneas)
+prompt_lines.append(
+    "Por favor, genera:\n"
+    "1. Resumen ejecutivo (2 líneas).\n"
+    "2. Tabla Step | Estado | Error.\n"
+    "3. Causa raíz probable basada en Appium.\n"
+    "4. Recomendaciones con responsable y prioridad.\n"
+)
+prompt = "\n".join(prompt_lines)
 
-Fallos:
-{summary}
-""")
-
-# 3. Llamada a GPT‑4o
+# 4) Llamar al LLM
 openai.api_key = os.getenv("OPENAI_API_KEY")
-resp = openai.chat.completions.create(
+resp = openai.ChatCompletion.create(
     model="gpt-3.5-turbo",
-    messages=[{"role": "user", "content": prompt}],
+    messages=[{"role":"system","content":"Analiza fallos de Appium."},
+              {"role":"user","content":prompt}],
     temperature=0.2
 )
 analysis = resp.choices[0].message.content
 
-# 4. Guardar markdown
-with open(args.output, "w", encoding="utf‑8") as f:
-    f.write(f"# Reporte RCA de Pruebas\n\n{analysis}")
+# 5) Guardar Markdown
+with open(args.output_md, 'w', encoding='utf8') as f:
+    f.write("# RCA Automatizado\n\n")
+    f.write(analysis)
+
+# 6) Generar PDF con ReportLab, incluyendo capturas
+styles = getSampleStyleSheet()
+doc = SimpleDocTemplate(args.output_pdf)
+story = [Paragraph("RCA Automatizado", styles['Heading1']), Spacer(1,12),
+         Paragraph(analysis.replace('\n','<br/>'), styles['BodyText']), Spacer(1,12)]
+
+# Incrustar capturas
+for idx, f in enumerate(failures):
+    if f['screenshot']:
+        data_bytes = base64.b64decode(f['screenshot'])
+        img_path = f"cap_{idx}.png"
+        with open(img_path, 'wb') as imgf:
+            imgf.write(data_bytes)
+        story.append(Paragraph(f"Captura en {f['failed_step']}", styles['Heading3']))
+        story.append(Image(img_path, width=400, height=300))
+        story.append(Spacer(1,12))
+
+doc.build(story)
