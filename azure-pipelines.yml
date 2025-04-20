@@ -162,12 +162,12 @@ jobs:
 
       # 4) Generar el markdown del RCA
       - powershell: |
-          Write-Host "Generando rca.md con GPT‑4o…"
+          Write-Host "Generando rca.md y rca.pdf con GPT‑4o…"
           python scripts/generate_rca.py `
               --cucumber "$(Pipeline.Workspace)\FailArtifacts\report.json" `
-              --logs     "$(Pipeline.Workspace)\FailArtifacts\logs" `
-              --output   rca.md
-        displayName: "Generar RCA (markdown)"
+              --output-md rca.md `
+              --output-pdf rca.pdf
+        displayName: "Generar RCA (markdown + PDF)"
         env:
           OPENAI_API_KEY: $(OPENAI_API_KEY)
 
@@ -181,8 +181,10 @@ jobs:
       - task: PublishBuildArtifacts@1
         displayName: "Publicar RCA_Report"
         inputs:
-          PathtoPublish: 'rca.pdf'
-          ArtifactName: RCA_Report
+          PathtoPublish: |
+            rca.md
+            rca.pdf
+            ArtifactName: RCA_Report
 
       # 7) Comentar en el Pull Request usando la variable PR_ID
       - powershell: |
