@@ -166,7 +166,6 @@ jobs:
           Write-Host "Generando rca.md y rca.pdf con GPT‑4o…"
           python scripts/generate_rca.py `
               --cucumber "$(Pipeline.Workspace)\FailArtifacts\report.json" `
-              --output-md rca.md `
               --output-pdf rca.pdf
         displayName: "Generar RCA (markdown + PDF)"
         env:
