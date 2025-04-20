@@ -11,7 +11,8 @@ pool:
   name: SelfHostedAgentPools
 
 # ───────── variables globales del pipeline ─────────
-
+variables:
+  PR_ID: $(System.PullRequest.PullRequestId)
 
 # ───────────────────────────────────────────
 #  JOB 1  ·  TEST
@@ -159,6 +160,7 @@ jobs:
       - download: current
         artifact: FailArtifacts
 
+      # 4) Generar el markdown del RCA
       - powershell: |
           Write-Host "Generando rca.md con GPT‑4o…"
           python scripts/generate_rca.py `
@@ -169,22 +171,23 @@ jobs:
         env:
           OPENAI_API_KEY: $(OPENAI_API_KEY)
 
+      # 5) Convertir md → PDF con tu script Python
       - powershell: |
           Write-Host "Convertir rca.md → rca.pdf con ReportLab…"
           python scripts/convert_to_pdf.py rca.md rca.pdf
         displayName: "Convertir md → PDF con ReportLab"
 
+      # 6) Publicar el PDF como artefacto
       - task: PublishBuildArtifacts@1
         displayName: "Publicar RCA_Report"
         inputs:
           PathtoPublish: 'rca.pdf'
           ArtifactName: RCA_Report
 
+      # 7) Comentar en el Pull Request usando la variable PR_ID
       - powershell: |
-          Write-Host "Comentando el Pull Request…"
-          python scripts/post_to_ado.py `
-              --pr $(System.PullRequest.PullRequestId) `
-              --file rca.md
+          Write-Host "Comentando el Pull Request #$Env:PR_ID…"
+          python scripts/post_to_ado.py --pr $Env:PR_ID --file rca.md
         displayName: "Comentar RCA en PR"
         env:
           ADO_PAT: $(ADO_PAT)
