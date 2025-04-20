@@ -181,10 +181,8 @@ jobs:
       - task: PublishBuildArtifacts@1
         displayName: "Publicar RCA_Report"
         inputs:
-          PathtoPublish: |
-            rca.md
-            rca.pdf
-            ArtifactName: RCA_Report
+          PathtoPublish: 'rca.pdf'
+          ArtifactName: RCA_Report
 
       # 7) Comentar en el Pull Request usando la variable PR_ID
       - powershell: |
