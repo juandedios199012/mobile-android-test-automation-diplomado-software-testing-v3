@@ -156,13 +156,12 @@ jobs:
       name: SelfHostedAgentPools
 
     steps:
-      # 1) Descargar artefactos
+      # 1) Descargar artefactos de fallos
       - download: current
         artifact: FailArtifacts
 
-      # 3) Generar el markdown del RCA
+      # 2) Generar el markdown del RCA (usa tu instalación global de Python y dependencias ya instaladas)
       - powershell: |
-          # Asume que openai, weasyprint, requests ya están instalados
           $cucumber = "$(Pipeline.Workspace)\FailArtifacts\report.json"
           $logs     = "$(Pipeline.Workspace)\FailArtifacts\logs"
 
@@ -175,20 +174,36 @@ jobs:
         env:
           OPENAI_API_KEY: $(OPENAI_API_KEY)
 
-      # 4) Convertir md → PDF
+      # 3) Convertir rca.md → rca.pdf usando ReportLab (asume reportlab y markdown2 instalados)
       - powershell: |
-          weasyprint rca.md rca.pdf
-        displayName: "Convertir md → PDF"
+          Write-Host "Convertir rca.md → rca.pdf con ReportLab…"
+          python - <<'EOF'
+          from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+          from reportlab.lib.styles import getSampleStyleSheet
+          import markdown2
 
-      # 5) Publicar el PDF como artefacto
+          md = open('rca.md', 'r', encoding='utf8').read()
+          html = markdown2.markdown(md)
+          styles = getSampleStyleSheet()
+          doc = SimpleDocTemplate("rca.pdf")
+          story = []
+          for line in html.split('\n'):
+            story.append(Paragraph(line, styles["BodyText"]))
+            story.append(Spacer(1, 6))
+          doc.build(story)
+          EOF
+        displayName: "Convertir md → PDF con ReportLab"
+
+    # 4) Publicar el PDF como artefacto
       - task: PublishBuildArtifacts@1
         displayName: "Publicar RCA_Report"
         inputs:
           PathtoPublish: 'rca.pdf'
           ArtifactName: RCA_Report
 
-      # 6) Comentar en el Pull Request
+    # 5) Comentar el Pull Request
       - powershell: |
+          Write-Host "Comentando el Pull Request…"
           python scripts\post_to_ado.py `
               --pr $(System.PullRequest.PullRequestId) `
               --file rca.md
