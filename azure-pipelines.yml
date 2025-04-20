@@ -10,10 +10,6 @@ trigger:
 pool:
   name: SelfHostedAgentPools
 
-# ───────── variables globales del pipeline ─────────
-variables:
-  PR_ID: $(System.PullRequest.PullRequestId)
-
 # ───────────────────────────────────────────
 #  JOB 1  ·  TEST
 # ───────────────────────────────────────────
@@ -177,11 +173,3 @@ jobs:
         inputs:
           PathtoPublish: 'rca.pdf'
           ArtifactName: RCA_Report
-
-      # 7) Comentar en el Pull Request usando la variable PR_ID
-      - powershell: |
-          Write-Host "Comentando el Pull Request #$Env:PR_ID…"
-          python scripts/post_to_ado.py --pr $Env:PR_ID --file rca.pdf
-        displayName: "Comentar RCA en PR"
-        env:
-          ADO_PAT: $(ADO_PAT)
